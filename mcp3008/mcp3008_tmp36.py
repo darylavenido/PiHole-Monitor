@@ -36,6 +36,25 @@ def ConvertVolts(data,places):
 # TMP36 data, rounded to specified
 # number of decimal places.
 def ConvertTemp(data,places):
+
+  # ADC Value
+  # (approx)  Temp  Volts
+  #    0      -50    0.00
+  #   78      -25    0.25
+  #  155        0    0.50
+  #  233       25    0.75
+  #  310       50    1.00
+  #  388       75    1.25
+  #  465      100    1.50
+  #  543      125    1.75
+  #  620      150    2.00
+  #  698      175    2.25
+  #  775      200    2.50
+  #  853      225    2.75
+  #  930      250    3.00
+  # 1008      275    3.25
+  # 1023      280    3.30
+
   temp = ((data * 330)/1023)-50
   temp = round(temp,places)
   return temp
