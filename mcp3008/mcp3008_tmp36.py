@@ -79,10 +79,8 @@ while True:
 
   # Print out results
   print "--------------------------------------------"  
-  print("Light : {} ({}V)".format(light_level, light_volts))  
-  print("Temp  : {} ({}V) {} deg C".format(temp_level, temp_volts, temp))    
-  #print "Light : " + str(light_level) + " (" + str(light_volts) + "V)"
-  #print "Temp  : " + str(temp_level) + " (" + str(temp_volts) + "V) " + str(temp) + " degrees C" 
+  print("Light : {} ({}V)".format(light_level,light_volts))  
+  print("Temp  : {} ({}V) {} deg C".format(temp_level,temp_volts,temp))    
 
   # Wait before repeating loop
   time.sleep(delay)
