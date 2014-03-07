@@ -28,7 +28,7 @@ def ReadChannel(channel):
 # Function to convert data to voltage level,
 # rounded to specified number of decimal places. 
 def ConvertVolts(data,places):
-  volts = (data * 3.3) / 1023
+  volts = (data * 3.3) / float(1023)
   volts = round(volts,places)  
   return volts
   
@@ -55,7 +55,7 @@ def ConvertTemp(data,places):
   # 1008      275    3.25
   # 1023      280    3.30
 
-  temp = ((data * 330)/1023)-50
+  temp = ((data * 330)/float(1023))-50
   temp = round(temp,places)
   return temp
   
