@@ -6,7 +6,7 @@
 # Analogue joystick version!
 #
 # Author : Matt Hawkins
-# Date   : 16/04/2014
+# Date   : 17/04/2014
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -28,30 +28,26 @@ def ReadChannel(channel):
   return data
  
 # Define sensor channels
+# (channels 3 to 7 unused)
 swt_channel = 0
 vrx_channel = 1
 vry_channel = 2
-# unused channel 3
-# unused channel 4
-# unused channel 5
-# unused channel 6
-# unused channel 7
 
 # Define delay between readings (s)
-delay = 1
+delay = 0.5
 
 while True:
 
   # Read the joystick position data
-  vrx_position = ReadChannel(vrx_channel)
-  vry_position = ReadChannel(vry_channel)
+  vrx_pos = ReadChannel(vrx_channel)
+  vry_pos = ReadChannel(vry_channel)
 
   # Read switch state
-  swt_value = ReadChannel(swt_channel)
+  swt_val = ReadChannel(swt_channel)
 
   # Print out results
   print "--------------------------------------------"  
-  print("X : {}  Y : {}  Switch : {}".format(vrx_position,vry_position,swt_value))
+  print("X : {}  Y : {}  Switch : {}".format(vrx_pos,vry_pos,swt_val))
 
   # Wait before repeating loop
   time.sleep(delay)
