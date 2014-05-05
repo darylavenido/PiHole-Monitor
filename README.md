@@ -1,6 +1,7 @@
 # Example scripts for the Raspberry Pi
 
 # Python Scripts
+* gertduino
 * gnuplot
     * gnuplot_example.png      - Example plot
     * gnuplot_generate_data.py - Generate some example data
@@ -11,6 +12,8 @@
 * mcp23017
     * mcp23017_inputs.py  - Configure and read inputs
     * mcp23017_outputs.py - Configure and read outputs
+* minecraft
+    * api_test.py         - Test API is working
 
 # Tutorials and Guides
 Visit my site for more information :
