@@ -14,6 +14,7 @@
     * mcp23017_outputs.py - Configure and read outputs
 * minecraft
     * api_test.py         - Test API is working
+    * castle.py           - Castle building script
 
 # Tutorials and Guides
 Visit my site for more information :
