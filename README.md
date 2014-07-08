@@ -15,6 +15,7 @@
 * minecraft
     * api_test.py         - Test API is working
     * castle.py           - Castle building script
+    * counterstrike.py    - Operation Counterstrike game
 
 # Tutorials and Guides
 Visit my site for more information :
