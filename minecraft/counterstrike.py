@@ -28,15 +28,15 @@ import mcpi.minecraft as minecraft
 import mcpi.block as block
 
 # Import PiFace library
-import pifacecad as pf
+#import pifacecad as pf
 
 def message(msg):
   # Send messages to game, PiFace and command line
-  cad.lcd.clear()
+  #cad.lcd.clear()
   msg_one_line = msg.replace('\n',' ')
   mc.postToChat(msg_one_line)
   print msg_one_line
-  cad.lcd.write(msg)
+  #cad.lcd.write(msg)
 
 def plant_device():
   # Place TNT block at random location
@@ -88,8 +88,8 @@ def count_down(increment):
 
 mc=minecraft.Minecraft.create()
   
-cad = pf.PiFaceCAD()
-cad.lcd.backlight_on()
+#cad = pf.PiFaceCAD()
+#cad.lcd.backlight_on()
 
 message("Standby ...")
 
