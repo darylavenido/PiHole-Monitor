@@ -11,7 +11,7 @@
 # to a PiFace Control & Display
 #
 # Author : Matt Hawkins
-# Date   : 10/07/2014
+# Date   : 09/07/2014
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -41,22 +41,24 @@ def message(msg):
 def plant_device():
   # Place TNT block at random location
   # returning its location and timer
-  x=rand.randint(-110,110)
-  y=110
-  z=rand.randint(-110,110)
+  x=rand.randint(-100,100)
+  y=100
+  z=rand.randint(-100,100)
 
-  # Lower block until we hit ground
-  while mc.getBlock(x,y,z)==block.AIR.id:
+  # Lower if block underneath is air or water
+  current_block=mc.getBlock(x,y-1,z)
+  while current_block==block.AIR.id or current_block==block.WATER_STATIONARY.id:
     y=y-1
+    current_block=mc.getBlock(x,y-1,z)
 
   # Bury under ground but not sea bed
-  if mc.getBlock(x,y,z)!=block.WATER_STATIONARY.id:
-    y = rand.randint(y-5,y-2)
+  if mc.getBlock(x,y+1,z)!=block.WATER_STATIONARY.id:
+    y = rand.randint(y-3,y-1)
 
   # Place TNT block
   mc.setBlock(x,y,z,block.TNT)
 
-  return [x,y,z,rand.randint(60,180)]
+  return [x,y,z,rand.randint(80,180)]
 
 def nearest_device():
   # Find distance to nearest device
