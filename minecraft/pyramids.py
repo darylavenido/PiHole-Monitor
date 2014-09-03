@@ -18,8 +18,8 @@ import time
 import math
 
 # Import specific Minecraft libraries
-import minecraft.minecraft as minecraft
-import minecraft.block as block
+import mcpi.minecraft as minecraft
+import mcpi.block as block
 
 # Block definitions
 # See XXXXXX for more materials
