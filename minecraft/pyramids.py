@@ -22,7 +22,7 @@ import mcpi.minecraft as minecraft
 import mcpi.block as block
 
 # Block definitions
-# See XXXXXX for more materials
+# See http://www.raspberrypi-spy.co.uk/2014/09/raspberry-pi-minecraft-block-id-number-reference/ for more blocks
 AIR       = 0
 DIRT      = 3
 SAND      = 12
