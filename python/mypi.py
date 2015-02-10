@@ -17,6 +17,8 @@
 #
 #--------------------------------------
 
+import os
+
 # Define functions
 
 def getmac(interface='eth0'):
@@ -39,7 +41,7 @@ def getserial():
   except:
     mycpuserial = "Error"
 
-  return cpuserial
+  return mycpuserial
 
 def getrevision():
   # Extract board revision from cpuinfo file
@@ -58,10 +60,9 @@ def getrevision():
 def getip(interface='eth0'):
   # Read ifconfig.txt and extract IP address
   try:
-    #filename = 'ifconfig_' + interface + '.txt'
-    #os.system('ifconfig ' + interface + ' > /home/pi/' + filename)
-    #f = open('/home/pi/' + filename, 'r')
-    f = open('d:\ifconfig.txt', 'r')
+    filename = 'ifconfig_' + interface + '.txt'
+    os.system('ifconfig ' + interface + ' > /home/pi/' + filename)
+    f = open('/home/pi/' + filename, 'r')
     line = f.readline() # skip 1st line
     line = f.readline() # read 2nd line
     line = line.strip()
@@ -83,12 +84,12 @@ if __name__ == '__main__':
 
   # Script has been called directly
 
-  #myRevision = getrevision()
-  #mySerial = getserial()
-  #myMAC = getMAC()
+  myRevision = getrevision()
+  mySerial = getserial()
+  myMAC = getmac()
   myIp = getip()
 
-  print "Revision Number : " + myIp
-  print "Serial Number   : " + myIp
-  print "Mac Address     : " + myIp
+  print "Revision Number : " + myRevision
+  print "Serial Number   : " + mySerial
+  print "Mac Address     : " + myMAC
   print "IP Address      : " + myIp
