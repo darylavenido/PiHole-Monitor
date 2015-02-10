@@ -34,4 +34,5 @@ def gettemp(id):
 if __name__ == '__main__':
 
   # Script has been called directly
-  print "Temp : " + '{:.3f}'.format(gettemp('28-0000048214da')/float(1000))
+  id = '28-00000482b243'
+  print "Temp : " + '{:.3f}'.format(gettemp(id)/float(1000))
