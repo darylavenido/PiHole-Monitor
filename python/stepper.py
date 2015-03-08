@@ -11,8 +11,15 @@
 # A simple script to control
 # a stepper motor.
 #
+# Call either as :
+#   sudo python stepper.py
+# or :
+#   sudo python stepper.py 20
+# where 20 is the wait time between steps
+# in milliseconds. Default is 10.
+#
 # Author : Matt Hawkins
-# Date   : 11/07/2012
+# Date   : 08/03/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -20,6 +27,7 @@
 #!/usr/bin/env python
 
 # Import required libraries
+import sys
 import time
 import RPi.GPIO as GPIO
 
@@ -28,9 +36,9 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 
 # Define GPIO signals to use
-# Pins 18,22,24,26
-# GPIO24,GPIO25,GPIO8,GPIO7
-StepPins = [24,25,8,7]
+# Physical pins 13,15,23,24
+# GPIO27,GPIO22,GPIO23,GPIO24
+StepPins = [27,22,23,24]
 
 # Set all pins as output
 for pin in StepPins:
@@ -40,7 +48,13 @@ for pin in StepPins:
 
 # Define some settings
 StepCounter = 0
-WaitTime = 0.5
+
+# Look for wait time passed (in milliseconds)
+# as argument on the command line
+if len(sys.argv)>1:
+  WaitTime = int(sys.argv[1])/1000
+else:
+  WaitTime = 10/1000
 
 # Define simple sequence
 StepCount1 = 4
