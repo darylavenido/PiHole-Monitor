@@ -1,4 +1,15 @@
 #!/usr/bin/python
+#--------------------------------------
+#
+#           bh1750.py
+#  Read data from a digital light sensor.
+#
+# Author : Matt Hawkins
+# Date   : 20/03/2015
+#
+# http://www.raspberrypi-spy.co.uk/
+#
+#--------------------------------------
 import smbus
 import time
 from ctypes import c_short
