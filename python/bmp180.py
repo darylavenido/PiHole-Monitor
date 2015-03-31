@@ -6,11 +6,11 @@
 # /_/|_/_/  /_/___/ .__/\_, /  
 #                /_/   /___/   
 #
-#           bh1750.py
-#  Read data from a digital light sensor.
+#           bmp180.py
+#  Read data from a digital pressure sensor.
 #
 # Author : Matt Hawkins
-# Date   : 20/03/2015
+# Date   : 29/03/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -26,15 +26,22 @@ def convertToString(data):
  
 # Define some constants from the datasheet
 
-DEVICE = 0x77 # Device address
+DEVICE     = 0x77 # Device address
+OVERSAMPLE = 3    # 0 - 3
+
+# Register Addresses
+REG_ID    = 0xD0
+REG_CALIB = 0xAA
+REG_MEAS  = 0xF4
+REG_MSB   = 0xF6
+REG_LSB   = 0xF7
+
+# Control Register Address
+CRV_TEMP  = 0x2E
+CRV_PRES  = 0x34
 
 #bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
 bus = smbus.SMBus(1) # Rev 2 Pi uses 1
-
-#!/usr/bin/python
-
-addr = 0x77
-oversampling = 3        # 0..3
 
 # return two bytes from data as a signed 16-bit value
 def get_short(data, index):
@@ -44,67 +51,66 @@ def get_short(data, index):
 def get_ushort(data, index):
         return (data[index] << 8) + data[index + 1]
 
-(chip_id, version) = bus.read_i2c_block_data(addr, 0xD0, 2)
-print "Chip Id:", chip_id, "Version:", version
+(chip_id, chip_version) = bus.read_i2c_block_data(DEVICE, REG_ID, 2)
+print "Chip ID:", chip_id
+print "Version:", chip_version
 
 print
-print "Reading calibration data..."
-# Read whole calibration EEPROM data
-cal = bus.read_i2c_block_data(addr, 0xAA, 22)
+# Read calibration data
+# Read calibration data from EEPROM
+cal = bus.read_i2c_block_data(DEVICE, REG_CALIB, 22)
 
 # Convert byte data to word values
-ac1 = get_short(cal, 0)
-ac2 = get_short(cal, 2)
-ac3 = get_short(cal, 4)
-ac4 = get_ushort(cal, 6)
-ac5 = get_ushort(cal, 8)
-ac6 = get_ushort(cal, 10)
-b1 = get_short(cal, 12)
-b2 = get_short(cal, 14)
-mb = get_short(cal, 16)
-mc = get_short(cal, 18)
-md = get_short(cal, 20)
+AC1 = get_short(cal, 0)
+AC2 = get_short(cal, 2)
+AC3 = get_short(cal, 4)
+AC4 = get_ushort(cal, 6)
+AC5 = get_ushort(cal, 8)
+AC6 = get_ushort(cal, 10)
+B1  = get_short(cal, 12)
+B2  = get_short(cal, 14)
+MB  = get_short(cal, 16)
+MC  = get_short(cal, 18)
+MD  = get_short(cal, 20)
 
-print "Starting temperature conversion..."
-bus.write_byte_data(addr, 0xF4, 0x2E)
+# Read temperature
+bus.write_byte_data(DEVICE, REG_MEAS, CRV_TEMP)
 time.sleep(0.005)
-(msb, lsb) = bus.read_i2c_block_data(addr, 0xF6, 2)
-ut = (msb << 8) + lsb
+(msb, lsb) = bus.read_i2c_block_data(DEVICE, REG_MSB, 2)
+UT = (msb << 8) + lsb
 
-print "Starting pressure conversion..."
-bus.write_byte_data(addr, 0xF4, 0x34 + (oversampling << 6))
+# Read pressure
+bus.write_byte_data(DEVICE, REG_MEAS, CRV_PRES + (OVERSAMPLE << 6))
 time.sleep(0.04)
-(msb, lsb, xsb) = bus.read_i2c_block_data(addr, 0xF6, 3)
-up = ((msb << 16) + (lsb << 8) + xsb) >> (8 - oversampling)
+(msb, lsb, xsb) = bus.read_i2c_block_data(DEVICE, REG_MSB, 3)
+UP = ((msb << 16) + (lsb << 8) + xsb) >> (8 - OVERSAMPLE)
 
-print "Calculating temperature..."
-x1 = ((ut - ac6) * ac5) >> 15
-x2 = (mc << 11) / (x1 + md)
-b5 = x1 + x2
-t = (b5 + 8) >> 4
+# Refine temperature
+X1 = ((UT - AC6) * AC5) >> 15
+X2 = (MC << 11) / (X1 + MD)
+B5 = X1 + X2
+temperature = (B5 + 8) >> 4
 
-print "Calculating pressure..."
-b6 = b5 - 4000
-b62 = b6 * b6 >> 12
-x1 = (b2 * b62) >> 11
-x2 = ac2 * b6 >> 11
-x3 = x1 + x2
-b3 = (((ac1 * 4 + x3) << oversampling) + 2) >> 2
+# Refine pressure
+B6  = B5 - 4000
+B62 = B6 * B6 >> 12
+X1  = (B2 * B62) >> 11
+X2  = AC2 * B6 >> 11
+X3  = X1 + X2
+B3  = (((AC1 * 4 + X3) << OVERSAMPLE) + 2) >> 2
 
-x1 = ac3 * b6 >> 13
-x2 = (b1 * b62) >> 16
-x3 = ((x1 + x2) + 2) >> 2
-b4 = (ac4 * (x3 + 32768)) >> 15
-b7 = (up - b3) * (50000 >> oversampling)
+X1 = AC3 * B6 >> 13
+X2 = (B1 * B62) >> 16
+X3 = ((X1 + X2) + 2) >> 2
+B4 = (AC4 * (X3 + 32768)) >> 15
+B7 = (UP - B3) * (50000 >> OVERSAMPLE)
 
-p = (b7 * 2) / b4
-#p = (b7 / b4) * 2
+P = (B7 * 2) / B4
 
-x1 = (p >> 8) * (p >> 8)
-x1 = (x1 * 3038) >> 16
-x2 = (-7357 * p) >> 16
-p = p + ((x1 + x2 + 3791) >> 4)
+X1 = (P >> 8) * (P >> 8)
+X1 = (X1 * 3038) >> 16
+X2 = (-7357 * P) >> 16
+pressure = P + ((X1 + X2 + 3791) >> 4)
 
-print
-print "Temperature:", t/10.0, "C"
-print "Pressure:", p / 100.0, "hPa"
+print "Temperature : ", temperature/10.0, "C"
+print "Pressure    : ", pressure/ 100.0, "mbar"
