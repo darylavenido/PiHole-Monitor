@@ -21,6 +21,8 @@
     * stepper.py          - Simple stepper motor control
     * ultrasonic_1.py     - Ultrasonic sensor example
     * ultrasonic_2.py     - Ultrasonic sensor calibration
+    * bh1750.py           - BH1750 light sensor module
+    * bmp180.py           - BMP180 pressure & temperature module
 
 # Tutorials and Guides
 Visit my site for more information :
