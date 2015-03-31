@@ -10,7 +10,7 @@
 #  Read data from a digital light sensor.
 #
 # Author : Matt Hawkins
-# Date   : 20/03/2015
+# Date   : 29/03/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -47,8 +47,8 @@ ONE_TIME_HIGH_RES_MODE_2 = 0x21
 # Device is automatically set to Power Down after measurement.
 ONE_TIME_LOW_RES_MODE = 0x23
 
-#bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
-bus = smbus.SMBus(1) # Rev 2 Pi uses 1
+#bus = smbus.SMBus(0) # Rev 1 Pi uses 0
+bus = smbus.SMBus(1)  # Rev 2 Pi uses 1
 
 while True:
   data = bus.read_i2c_block_data(DEVICE,ONE_TIME_HIGH_RES_MODE_1)
