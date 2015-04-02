@@ -23,7 +23,8 @@
     * ultrasonic_2.py     - Ultrasonic sensor calibration
     * bh1750.py           - BH1750 light sensor module
     * bmp180.py           - BMP180 pressure & temperature module
+    * xmastree.py         - Script to use with the GPIO Xmas tree add-on from PocketMoneyTronics
 
 # Tutorials and Guides
-Visit my site for more information :
+Visit my Raspberry Pi site for more information :
 [http://www.raspberrypi-spy.co.uk/](http://www.raspberrypi-spy.co.uk/)
