@@ -85,7 +85,7 @@ def main():
 
   while True:
 
-    # Send some left justified text
+    # Send some centred text
     lcd_string("Rasbperry Pi",LCD_LINE_1,2)
     lcd_string("16x2 LCD Test",LCD_LINE_2,2)
 
@@ -183,7 +183,6 @@ def lcd_string(message,line,style):
     message = message.rjust(LCD_WIDTH," ")
 
   lcd_byte(line, LCD_CMD)
-
 
   for i in range(LCD_WIDTH):
     lcd_byte(ord(message[i]),LCD_CHR)
