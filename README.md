@@ -17,12 +17,14 @@
     * castle.py           - Castle building script
     * counterstrike.py    - Operation Counterstrike game
 * python
+    * bh1750.py           - BH1750 light sensor module
+    * bmp180.py           - BMP180 pressure & temperature module
     * detect_network_example.py
+    * lcd_16x2.py - LCD screen example
+    * lcd_16x2_backlight.py - LCD screen example with backlight control and justified text
     * stepper.py          - Simple stepper motor control
     * ultrasonic_1.py     - Ultrasonic sensor example
     * ultrasonic_2.py     - Ultrasonic sensor calibration
-    * bh1750.py           - BH1750 light sensor module
-    * bmp180.py           - BMP180 pressure & temperature module
     * xmastree.py         - Script to use with the GPIO Xmas tree add-on from PocketMoneyTronics
 
 # Tutorials and Guides
