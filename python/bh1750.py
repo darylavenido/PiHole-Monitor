@@ -10,7 +10,7 @@
 #  Read data from a digital light sensor.
 #
 # Author : Matt Hawkins
-# Date   : 29/03/2015
+# Date   : 15/04/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -18,14 +18,9 @@
 import smbus
 import time
 
-# Simple function to convert 2 bytes of data
-# into a decimal number
-def convertToNumber(data):
-  return ((data[1] + (256 * data[0])) / 1.2)
-
 # Define some constants from the datasheet
 
-DEVICE = 0x23 # I2C device address
+DEVICE     = 0x23 # Default device I2C address
 
 POWER_DOWN = 0x00 # No active state
 POWER_ON   = 0x01 # Power on
@@ -50,7 +45,20 @@ ONE_TIME_LOW_RES_MODE = 0x23
 #bus = smbus.SMBus(0) # Rev 1 Pi uses 0
 bus = smbus.SMBus(1)  # Rev 2 Pi uses 1
 
-while True:
-  data = bus.read_i2c_block_data(DEVICE,ONE_TIME_HIGH_RES_MODE_1)
-  print "Light Level : " + str(convertToNumber(data)) + " lx"
-  time.sleep(0.2)
+def convertToNumber(data):
+  # Simple function to convert 2 bytes of data
+  # into a decimal number
+  return ((data[1] + (256 * data[0])) / 1.2)
+
+def readLight(addr=DEVICE):
+  data = bus.read_i2c_block_data(addr,ONE_TIME_HIGH_RES_MODE_1)
+  return convertToNumber(data)
+
+def main():
+
+  while True:
+    print "Light Level : " + str(readLight()) + " lx"
+    time.sleep(0.5)
+  
+if __name__=="__main__":
+   main()
