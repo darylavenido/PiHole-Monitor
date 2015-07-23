@@ -28,7 +28,6 @@ import RPi.GPIO as GPIO  # GPIO library
 
 ################# Default Constants #################
 # These can be changed if required
-DEVICE        = 0x77 # Default device I2C address
 SMBUSID       = 1    # Rev 2 Pi uses 1, Rev 1 uses 0 
 LEDGPIO       = 17   # GPIO for LED
 SWITCHGPIO    = 22   # GPIO for switch
@@ -39,6 +38,9 @@ THINGSPEAKURL = 'https://api.thingspeak.com/update'
 #####################################################
 
 def switchCallback(channel):
+
+  global AUTOSHUTDOWN
+
   # Called if switch is pressed
   if AUTOSHUTDOWN==1:
     os.system('/sbin/shutdown -h now')
@@ -75,7 +77,15 @@ def sendData(url,key,field1,field2,temp,pres):
   print log
     
 def main():
-
+  
+  global SMBUSID
+  global LEDGPIO
+  global SWITCHGPIO
+  global INTERVAL
+  global AUTOSHUTDOWN
+  global THINGSPEAKKEY
+  global THINGSPEAKURL
+  
   # Check if config file exists and overwrite
   # default constants with new values
   if os.path.isfile('/boot/templogger.cfg')==True:
@@ -85,14 +95,13 @@ def main():
     f.close()
     if data[0]=='Temp Logger':
       print "Using templogger.cfg"    
-      DEVICE        = int(data[1],16)
-      SMBUSID       = int(data[2])
-      LEDGPIO       = int(data[3])
-      SWITCHGPIO    = int(data[4])
-      INTERVAL      = int(data[5])
-      AUTOSHUTDOWN  = int(data[6])
-      THINGSPEAKKEY = data[7]
-      THINGSPEAKURL = data[8]
+      SMBUSID       = int(data[1])
+      LEDGPIO       = int(data[2])
+      SWITCHGPIO    = int(data[3])
+      INTERVAL      = int(data[4])
+      AUTOSHUTDOWN  = int(data[5])
+      THINGSPEAKKEY = data[6]
+      THINGSPEAKURL = data[7]
 
   # Setup GPIO
   GPIO.setmode(GPIO.BCM)
