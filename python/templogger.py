@@ -1,13 +1,13 @@
 #!/usr/bin/python
 #--------------------------------------
-#    ___  ___  _ ____          
-#   / _ \/ _ \(_) __/__  __ __ 
-#  / , _/ ___/ /\ \/ _ \/ // / 
-# /_/|_/_/  /_/___/ .__/\_, /  
-#                /_/   /___/   
+#    ___  ___  _ ____
+#   / _ \/ _ \(_) __/__  __ __
+#  / , _/ ___/ /\ \/ _ \/ // /
+# /_/|_/_/  /_/___/ .__/\_, /
+#                /_/   /___/
 #
 #           Temperature Logger
-#  Read data from a BMP180 sensor and 
+#  Read data from a BMP180 sensor and
 #  send to Thingspeak.com account.
 #
 # Author : Matt Hawkins
@@ -28,13 +28,14 @@ import RPi.GPIO as GPIO  # GPIO library
 
 ################# Default Constants #################
 # These can be changed if required
-SMBUSID       = 1    # Rev 2 Pi uses 1, Rev 1 uses 0 
+DEVICE        = 0x77 # Default device I2C address
+SMBUSID       = 1    # Rev 2 Pi uses 1, Rev 1 uses 0
 LEDGPIO       = 17   # GPIO for LED
 SWITCHGPIO    = 22   # GPIO for switch
 INTERVAL      = 1    # Delay between each reading (mins)
 AUTOSHUTDOWN  = 1    # Set to 1 to shutdown on switch
 THINGSPEAKKEY = 'ABCDEFGH12345678'
-THINGSPEAKURL = 'https://api.thingspeak.com/update' 
+THINGSPEAKURL = 'https://api.thingspeak.com/update'
 #####################################################
 
 def switchCallback(channel):
@@ -59,7 +60,7 @@ def sendData(url,key,field1,field2,temp,pres):
   log = time.strftime("%d-%m-%Y,%H:%M:%S") + ","
   log = log + "{:.1f}C".format(temp) + ","
   log = log + "{:.2f}mBar".format(pres) + ","
-  
+
   try:
     # Send data to Thingspeak
     response = urllib2.urlopen(req, None, 5)
@@ -72,12 +73,13 @@ def sendData(url,key,field1,field2,temp,pres):
   except urllib2.URLError, e:
     log = log + 'Failed to reach server. Reason: ' + e.reason
   except:
-    log = log + 'Unknown error' 
+    log = log + 'Unknown error'
 
   print log
-    
+
 def main():
-  
+
+  global DEVICE
   global SMBUSID
   global LEDGPIO
   global SWITCHGPIO
@@ -85,7 +87,7 @@ def main():
   global AUTOSHUTDOWN
   global THINGSPEAKKEY
   global THINGSPEAKURL
-  
+
   # Check if config file exists and overwrite
   # default constants with new values
   if os.path.isfile('/boot/templogger.cfg')==True:
@@ -94,40 +96,41 @@ def main():
     data = f.read().splitlines()
     f.close()
     if data[0]=='Temp Logger':
-      print "Using templogger.cfg"    
-      SMBUSID       = int(data[1])
-      LEDGPIO       = int(data[2])
-      SWITCHGPIO    = int(data[3])
-      INTERVAL      = int(data[4])
-      AUTOSHUTDOWN  = int(data[5])
-      THINGSPEAKKEY = data[6]
-      THINGSPEAKURL = data[7]
+      print "Using templogger.cfg"
+      DEVICE        = int(data[1],16)
+      SMBUSID       = int(data[2])
+      LEDGPIO       = int(data[3])
+      SWITCHGPIO    = int(data[4])
+      INTERVAL      = int(data[5])
+      AUTOSHUTDOWN  = int(data[6])
+      THINGSPEAKKEY = data[7]
+      THINGSPEAKURL = data[8]
 
   # Setup GPIO
   GPIO.setmode(GPIO.BCM)
-  GPIO.setwarnings(False)  
+  GPIO.setwarnings(False)
   # LED on GPIO17
   GPIO.setup(LEDGPIO , GPIO.OUT)
   # Switch on GPIO22 as input pulled LOW by default
-  GPIO.setup(SWITCHGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  
+  GPIO.setup(SWITCHGPIO, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
   # Define what function to call when switch pressed
-  GPIO.add_event_detect(SWITCHGPIO, GPIO.RISING, callback=switchCallback) 
+  GPIO.add_event_detect(SWITCHGPIO, GPIO.RISING, callback=switchCallback)
 
   bus = smbus.SMBus(SMBUSID)
 
   try:
 
     while True:
-      GPIO.output(LEDGPIO, True)  
-      (temperature,pressure)=bmp180.readBmp180()
-      sendData(THINGSPEAKURL,THINGSPEAKKEY,'field1','field2',temperature,pressure)  
+      GPIO.output(LEDGPIO, True)
+      (temperature,pressure)=bmp180.readBmp180(DEVICE)
+      sendData(THINGSPEAKURL,THINGSPEAKKEY,'field1','field2',temperature,pressure)
       sys.stdout.flush()
-      
+
       # Toggle LED while we wait for next reading
       for i in range(0,INTERVAL*60):
         GPIO.output(LEDGPIO, not GPIO.input(LEDGPIO))
         time.sleep(1)
-  
+
   except :
     # Reset GPIO settings
     GPIO.cleanup()
