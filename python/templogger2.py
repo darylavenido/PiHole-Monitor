@@ -13,7 +13,7 @@
 #  cfg.DISPlay data on a Nokia 5110 Screen
 #
 # Author : Matt Hawkins
-# Date   : 28/08/2015
+# Date   : 02/09/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
