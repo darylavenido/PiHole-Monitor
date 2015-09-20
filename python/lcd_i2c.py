@@ -118,3 +118,4 @@ if __name__ == '__main__':
     pass
   finally:
     lcd_byte(0x01, LCD_CMD)
+
