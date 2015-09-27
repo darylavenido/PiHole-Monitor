@@ -7,11 +7,11 @@
 #                /_/   /___/
 #
 #           lcd_i2c.py
-#  LCD test script using I2C.
+#  LCD test script using I2C backpack.
 #  Supports 16x2 and 20x4 screens.
 #
 # Author : Matt Hawkins
-# Date   : 02/04/2015
+# Date   : 20/09/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -118,3 +118,4 @@ if __name__ == '__main__':
     pass
   finally:
     lcd_byte(0x01, LCD_CMD)
+
