@@ -20,6 +20,7 @@
 # Import required libraries
 import RPi.GPIO as GPIO
 import time
+import datetime
 
 # Tell GPIO library to use GPIO references
 GPIO.setmode(GPIO.BCM)
@@ -31,7 +32,9 @@ GPIO.setup(17 , GPIO.IN)
 
 def sensorCallback(channel):
   # Called if sensor output goes Low
-  print "Sensor triggered"
+  timestamp = time.time()
+  stamp = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
+  print "Sensor triggered " + stamp
 
 def main():
   # Wrap main content in a try block so we can
