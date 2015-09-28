@@ -17,7 +17,6 @@
 # http://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
-#!/usr/bin/env python
 
 # Import required libraries
 import sys
