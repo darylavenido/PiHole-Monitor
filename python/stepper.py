@@ -12,7 +12,7 @@
 # a stepper motor.
 #
 # Author : Matt Hawkins
-# Date   : 20/03/2015
+# Date   : 28/09/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -50,8 +50,8 @@ Seq = [[1,0,0,0],
        [0,0,0,1],
        [1,0,0,1]]
        
-StepCount = len(Seq)-1
-StepDir = 2 # Set to 1 or 2 for clockwise
+StepCount = len(Seq)
+StepDir = 1 # Set to 1 or 2 for clockwise
             # Set to -1 or -2 for anti-clockwise
 
 # Read wait time from command line
@@ -66,12 +66,13 @@ StepCounter = 0
 # Start main loop
 while True:
 
+  print StepCounter,
+  print Seq[StepCounter]
+
   for pin in range(0, 4):
     xpin = StepPins[pin]
-    print StepCounter
-    print pin
     if Seq[StepCounter][pin]!=0:
-      print " Step %i Enable %i" %(StepCounter,xpin)
+      print " Enable GPIO %i" %(xpin)
       GPIO.output(xpin, True)
     else:
       GPIO.output(xpin, False)
@@ -83,7 +84,7 @@ while True:
   if (StepCounter>=StepCount):
     StepCounter = 0
   if (StepCounter<0):
-    StepCounter = StepCount
+    StepCounter = StepCount+StepDir
 
   # Wait before moving on
   time.sleep(WaitTime)
