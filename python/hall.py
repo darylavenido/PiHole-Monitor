@@ -30,12 +30,18 @@ print "Setup GPIO pin as input"
 # Set Switch GPIO as input
 GPIO.setup(17 , GPIO.IN)
 
-def sensorCallback(channel):
-  # Called if sensor output goes Low
+def sensorCallback1(channel):
+  # Called if sensor output goes LOW
   timestamp = time.time()
   stamp = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
-  print "Sensor triggered " + stamp
+  print "Sensor LOW " + stamp
 
+def sensorCallback2(channel):
+  # Called if sensor output goes HIGH
+  timestamp = time.time()
+  stamp = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
+  print "Sensor HIGH " + stamp
+  
 def main():
   # Wrap main content in a try block so we can
   # catch the user pressing CTRL-C and run the
@@ -43,7 +49,8 @@ def main():
   # the user seeing lots of unnecessary error
   # messages.
   
-  GPIO.add_event_detect(17, GPIO.FALLING, callback=sensorCallback)  
+  GPIO.add_event_detect(17, GPIO.FALLING, callback=sensorCallback1)  
+  GPIO.add_event_detect(17, GPIO.RISING, callback=sensorCallback2) 
   
   try:
     # Loop until users quits with CTRL-C
