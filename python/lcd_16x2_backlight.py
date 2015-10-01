@@ -62,7 +62,8 @@ E_DELAY = 0.0005
 
 def main():
   # Main program block
-
+  
+  GPIO.setwarnings(False)
   GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
   GPIO.setup(LCD_E, GPIO.OUT)  # E
   GPIO.setup(LCD_RS, GPIO.OUT) # RS
