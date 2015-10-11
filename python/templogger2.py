@@ -13,7 +13,7 @@
 #  cfg.DISPlay data on a Nokia 5110 Screen
 #
 # Author : Matt Hawkins
-# Date   : 02/09/2015
+# Date   : 11/10/2015
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -51,7 +51,7 @@ def switch1Callback(channel):
 
 def switch2Callback(channel):
   cfg.LCDCONTRAST = cfg.LCDCONTRAST + 5
-  if cfg.LCDCONTRAST>75:
+  if cfg.LCDCONTRAST>70:
     cfg.LCDCONTRAST = 40
   cfg.DISP.set_contrast(cfg.LCDCONTRAST)
   print "Contrast:" + str(cfg.LCDCONTRAST)
@@ -60,6 +60,7 @@ def switch3Callback(channel):
   # Called if switch 1 is pressed
   if cfg.AUTOSHUTDOWN==1:
     os.system('/sbin/shutdown -h now')
+  print "Shutdown"    
   sys.exit(0)
   
 def sendData(url,key,field1,field2,temp,pres):
@@ -165,7 +166,7 @@ def getip(interface='eth0'):
   # Read ifconfig.txt and extract IP address
   try:
     filename = 'ifconfig_' + interface + '.txt'
-    os.system('ifconfig ' + interface + ' > /home/pi/' + filename)
+    os.system('/sbin/ifconfig ' + interface + ' > /home/pi/' + filename)
     f = open('/home/pi/' + filename, 'r')
     line = f.readline() # skip 1st line
     line = f.readline() # read 2nd line
