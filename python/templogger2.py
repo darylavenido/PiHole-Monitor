@@ -6,16 +6,31 @@
 # /_/|_/_/  /_/___/ .__/\_, /
 #                /_/   /___/
 #
-#         Temperature Logger 2
+#  Temperature Logger 2
 #  Read data from a BMP180 sensor and
 #  send to Thingspeak.com account.
 #
 #  cfg.DISPlay data on a Nokia 5110 Screen
 #
 # Author : Matt Hawkins
-# Date   : 11/10/2015
+# Date   : 18/10/2015
 #
 # http://www.raspberrypi-spy.co.uk/
+#
+# Copyright 2015 Matt Hawkins
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #--------------------------------------
 
@@ -42,7 +57,7 @@ import Adafruit_Nokia_LCD as LCD
 import Adafruit_GPIO.SPI as SPI
 
 def switch1Callback(channel):
-  # Called if switch 2 is pressed
+  # Called if switch 1 is pressed
   cfg.LCDSTYLE=cfg.LCDSTYLE+1
   if cfg.LCDSTYLE>5:
     cfg.LCDSTYLE=1
@@ -50,6 +65,7 @@ def switch1Callback(channel):
   updateAll(cfg.DISP)
 
 def switch2Callback(channel):
+  # Called if switch 2 is pressed
   cfg.LCDCONTRAST = cfg.LCDCONTRAST + 5
   if cfg.LCDCONTRAST>70:
     cfg.LCDCONTRAST = 40
@@ -57,10 +73,12 @@ def switch2Callback(channel):
   print "Contrast:" + str(cfg.LCDCONTRAST)
 
 def switch3Callback(channel):
-  # Called if switch 1 is pressed
-  if cfg.AUTOSHUTDOWN==1:
-    os.system('/sbin/shutdown -h now')
+  # Called if switch 3 is pressed
   print "Shutdown"    
+  cfg.LCDSTYLE=1
+  updateLCD(cfg.DISP,0,0)
+  if cfg.AUTOSHUTDOWN==1:
+    os.system('/sbin/shutdown -h now') 
   sys.exit(0)
   
 def sendData(url,key,field1,field2,temp,pres):
@@ -84,7 +102,7 @@ def sendData(url,key,field1,field2,temp,pres):
   except urllib2.HTTPError, e:
     log = log + 'Server could not fulfill the request. Error code: ' + str(e.code)
   except urllib2.URLError, e:
-    log = log + 'Failed to reach server. Reason: ' + e.reason
+    log = log + 'Failed to reach server. Reason: ' + str(e.reason)
   except:
     log = log + 'Unknown error'
 
