@@ -108,8 +108,7 @@ def sendData(url,key,field1,field2,temp,pres):
 
   print log
 
-def updateAll(disp):
-  (temperature,pressure)=bmp180.readBmp180(cfg.DEVICE)
+def updateAll(disp,temperature,pressure):
   updateMinMax(temperature,pressure)      
   updateLCD(disp,temperature,pressure)
 
@@ -243,7 +242,8 @@ def main():
       # 2 second loops
       for i in range(0,cfg.INTERVAL*30):
         time.sleep(2)
-        updateAll(cfg.DISP)
+        (temperature,pressure)=bmp180.readBmp180(cfg.DEVICE)
+        updateAll(cfg.DISP,temperature,pressure)
 
   except :
     # Reset GPIO settings
