@@ -39,8 +39,8 @@ I2C_ADDR  = 0x27 # I2C device address
 LCD_WIDTH = 16   # Maximum characters per line
 
 # Define some device constants
-LCD_CHR = 1 # Mode - Sending command
-LCD_CMD = 0 # Mode - Sending data
+LCD_CHR = 1 # Mode - Sending data
+LCD_CMD = 0 # Mode - Sending command
 
 LCD_LINE_1 = 0x80 # LCD RAM address for the 1st line
 LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
@@ -73,7 +73,7 @@ def lcd_init():
 def lcd_byte(bits, mode):
   # Send byte to data pins
   # bits = the data
-  # mode = 1 for character
+  # mode = 1 for data
   #        0 for command
 
   bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
