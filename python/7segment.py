@@ -9,7 +9,7 @@
 #  MAX7219 Seven Segment Display Model
 #
 # Author : Matt Hawkins
-# Date   : 25/02/2016
+# Date   : 27/02/2016
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -54,6 +54,7 @@ def date(device, deviceId):
 
 device = led.sevensegment()
 
+# Write date
 date(device, 0)
 
 # Adjust Brightness
@@ -65,16 +66,16 @@ for x in xrange(5):
 device.brightness(7)
 
 # Scroll Text
-for _ in xrange(8):
+for i in xrange(8):
   device.scroll_right()
   time.sleep(0.1)
-#    time.sleep(1)
-device.clear()
 
+device.clear()
 time.sleep(1)
 
 # Random Numbers
 while True:
+  # Random float
   num = random.uniform(0,99999)
   device.write_number(deviceId=0, value=num, zeroPad=True, decimalPlaces=3)
   time.sleep(0.5)
