@@ -34,7 +34,7 @@ def getRandomChar():
   # Get a random character 
   charset = '0123456789abcdefghijklmnopqrstuvwxyz-'
   val = random.randint(0,len(charset)-1)
-  return sequence1[val]
+  return charset[val]
 
 if len(sys.argv)>1:
   mode=sys.argv[1]
