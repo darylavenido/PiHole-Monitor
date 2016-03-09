@@ -83,13 +83,8 @@ def getIP(interface='eth0'):
 if __name__ == '__main__':
 
   # Script has been called directly
-
-  myRevision = getRevision()
-  mySerial = getSerial()
-  myMAC = getMAC()
-  myIP = getIP()
-
-  print "Revision Number      : " + myRevision
-  print "Serial Number        : " + mySerial
-  print "Ethernet MAC Address : " + myMAC
-  print "IP Address           : " + myIP
+  print "Revision Number      : " + getRevision()
+  print "Serial Number        : " + getSerial()
+  print "Ethernet MAC Address : " + getMAC('eth0')
+  print "Wireless MAC Address : " + getMAC('wlan0')
+  print "IP Address           : " + getIP()
