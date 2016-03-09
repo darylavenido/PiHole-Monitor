@@ -11,7 +11,7 @@
 #  - IP address
 #
 # Author : Matt Hawkins
-# Date   : 10/02/2015
+# Date   : 09/03/2016
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -21,15 +21,15 @@ import os
 
 # Define functions
 
-def getmac(interface='eth0'):
+def getMAC(interface='eth0'):
   # Return the MAC address of interface
   try:
-    line = open('/sys/class/net/%s/address' %interface).readline()
+    line = open('/sys/class/net/%s/address' %interface).read()
   except:
-    line = "Error"
+    line = "None"
   return line[0:17]
 
-def getserial():
+def getSerial():
   # Extract serial from cpuinfo file
   mycpuserial = "Error"
   try:
@@ -43,7 +43,7 @@ def getserial():
 
   return mycpuserial
 
-def getrevision():
+def getRevision():
   # Extract board revision from cpuinfo file
   myrevision = "Error"
   try:
@@ -57,7 +57,7 @@ def getrevision():
 
   return myrevision
 
-def getip(interface='eth0'):
+def getIP(interface='eth0'):
   # Read ifconfig.txt and extract IP address
   try:
     filename = 'ifconfig_' + interface + '.txt'
@@ -84,12 +84,12 @@ if __name__ == '__main__':
 
   # Script has been called directly
 
-  myRevision = getrevision()
-  mySerial = getserial()
-  myMAC = getmac()
-  myIp = getip()
+  myRevision = getRevision()
+  mySerial = getSerial()
+  myMAC = getMAC()
+  myIP = getIP()
 
-  print "Revision Number : " + myRevision
-  print "Serial Number   : " + mySerial
-  print "Mac Address     : " + myMAC
-  print "IP Address      : " + myIp
+  print "Revision Number      : " + myRevision
+  print "Serial Number        : " + mySerial
+  print "Ethernet MAC Address : " + myMAC
+  print "IP Address           : " + myIP
