@@ -28,7 +28,7 @@ def getLocation():
   # Find suitable location for tomb
   scan=True
   while scan==True:
-	# Random x,z location
+  # Random x,z location
     x = random.randint(-120, 120)
     z = random.randint(-120, 120)  
     # Get height of first non-air block in column
@@ -37,7 +37,7 @@ def getLocation():
     # Check what block we have found
     blocks = [block.SAND.id,block.DIRT.id,block.GRASS.id]
     if mc.getBlock(x,y,z) in blocks:
-	  # Suitable block so end scan
+    # Suitable block so end scan
       scan=False
       
   pos=(x,y,z)
@@ -68,17 +68,24 @@ def placeMarker(pos,material):
   # Place marker above tomb
   mc.setBlock(pos[0],pos[1]+20,pos[2],material)    
  
-def checkTreasures():
+def updateTreasures(treasureList):
+
+  treasures = []
+
   for treasure in treasureList:
-	  
-	  pos = treasure[0]
-	  size = treasure[1]
-	  depth = treasure[2]
-	  x = pos[0]
+    pos = treasure[0]
+    size = treasure[1]
+    depth = treasure[2]
+    x = pos[0]
       y = pos[1] - (size-1) - depth
       z = pos[2]
-	  if mc.getBlock(x,y,z)==block.AIR.id:
-        # Treasure gone
+    if mc.getBlock(x,y,z)==block.AIR.id:
+      # Treasure gone
+      time.sleep(1)
+    else:
+      treasures.append(treasure)  
+      
+  return treasures
   
 #--------------------------------------
 #
@@ -96,9 +103,9 @@ tombCount = 8
 
 mc.postToChat("Let's rob some graves!")
 
-print("Place " str(tombCount) + " random tombs and treasure")
+print("Place " + str(tombCount) + " random tombs and treasure")
 
-for tomb in range[tombCount]:
+for tomb in range(tombCount):
   
   tombpos = getLocation()
   
@@ -107,15 +114,13 @@ for tomb in range[tombCount]:
   treasurePos = createTomb(tombpos,4,3,block.STONE.id,block.GOLD_BLOCK.id)  
   treasureList.append(treasurePos)
  
-  print("Tomb " + str(tomb) + " placed "+pos) 
-
-# mc.player.setPos(0,30,4)
+  print("Tomb " + str(tomb) + " placed " + str(tombpos)) 
 
 remainingTreasure = tombCount
 
 mc.postToChat("There are " + str(remainingTreasure) + " treasures to find")
 
 while len(treasureList)>0:
-	# There are treasures to find!
-	checkTreasures():
-    time.sleep(5)
+  # There are treasures to find!
+  treasureList = updateTreasures(treasureList)
+  time.sleep(1)
