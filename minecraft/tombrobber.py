@@ -47,7 +47,7 @@ def getLocation():
   while scan==True:
     x = random.randint(-120, 120)
     z = random.randint(-120, 120)  
-    y = mc.getHeight(x,y)
+    y = mc.getHeight(x,z)
   
     # check what block we have hit  
     if mc.getBlock(x,y-1,z) in [block.SAND.id,block.DIRT.id,block.GRASS.id]:
