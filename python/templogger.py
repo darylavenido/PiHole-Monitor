@@ -52,7 +52,7 @@ def sendData(url,key,field1,field2,temp,pres):
   Send event to internet site
   """
 
-  values = {'key' : key,'field1' : temp,'field2' : pres}
+  values = {'api_key' : key,'field1' : temp,'field2' : pres}
 
   postdata = urllib.urlencode(values)
   req = urllib2.Request(url, postdata)
