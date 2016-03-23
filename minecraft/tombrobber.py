@@ -32,8 +32,9 @@ def createTomb(pos,size,blockID):
   y2 = pos[1] - size
   z2 = pos[2] - (size/2)
   mc.setBlocks(x1,y1,z1,x2,y2,z2,blockID) 
+  mc.setBlocks(x1-1,y1-1,z1-1,x2+1,y2+1,z2+1,block.AIR.id) 
   
-def addTreasure(pos,size,blockID)
+def addTreasure(pos,size,blockID):
   # Add treasure to tomb at position "pos"
   x = pos[0]
   y = pos[1] - (size-1)
@@ -41,7 +42,7 @@ def addTreasure(pos,size,blockID)
   mc.setBlock(x,y,z,blockID)
   
 def getLocation():
-
+  pritn
   scan=True
   while scan==True:
     x = random.randint(-120, 120)
@@ -49,9 +50,9 @@ def getLocation():
     y = mc.getHeight(x,y)
   
     # check what block we have hit  
-    if getBlock(x,y,z) in [block.SAND,block.DIRT]:
+    if mc.getBlock(x,y-1,z) in [block.SAND.id,block.DIRT.id,block.GRASS.id]:
       scan=False
-  
+  y=y-3
   pos=(x,y,z)
   
   return pos
@@ -75,9 +76,9 @@ for tomb in range[5]:
   pos = getLocation()
   
   # Place marker in the sky
-  mc.setBlock(pos[0],pos[1]+20,pos[2],block.GLASS)  
-  createTomb(pos,8,block.STONE)  
-  addTreasure(pos,8,block.GOLD)
+  mc.setBlock(pos[0],pos[1]+20,pos[2],block.GLASS.id)  
+  createTomb(pos,4,block.STONE.id)  
+  addTreasure(pos,4,block.GOLD_BLOCK.id)
  
   print("Tomb "+ tomb + " placed "+pos) 
 
