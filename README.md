@@ -22,6 +22,7 @@
     * detect_network_example.py
     * lcd_16x2.py - LCD screen example
     * lcd_16x2_backlight.py - LCD screen example with backlight control and justified text
+    * sendsms.py          - Send SMS text messages using the TextLocal webservice
     * stepper.py          - Simple stepper motor control
     * ultrasonic_1.py     - Ultrasonic sensor example
     * ultrasonic_2.py     - Ultrasonic sensor calibration
