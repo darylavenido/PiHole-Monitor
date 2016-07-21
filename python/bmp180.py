@@ -38,9 +38,8 @@ def getUshort(data, index):
   return (data[index] << 8) + data[index + 1]
 
 def readBmp180Id(addr=DEVICE):
-  # Register Address
+  # Chip ID Register Address
   REG_ID     = 0xD0
-
   (chip_id, chip_version) = bus.read_i2c_block_data(addr, REG_ID, 2)
   return (chip_id, chip_version)
   
