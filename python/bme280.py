@@ -9,11 +9,11 @@
 #           bme280.py
 #  Read data from a digital pressure sensor.
 #
-#  Datasheet available from :
+#  Official datasheet available from :
 #  https://www.bosch-sensortec.com/bst/products/all_products/bme280
 #
 # Author : Matt Hawkins
-# Date   : 24/07/2016
+# Date   : 25/07/2016
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -26,13 +26,9 @@ from ctypes import c_ubyte
 
 DEVICE = 0x76 # Default device I2C address
 
-#bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
-bus = smbus.SMBus(1) # Rev 2 Pi uses 1
 
-def convertToString(data):
-  # Simple function to convert binary data into
-  # a string
-  return str((data[1] + (256 * data[0])) / 1.2)
+bus = smbus.SMBus(1) # Rev 2 Pi, Pi 2 & Pi 3 uses bus 1
+                     # Rev 1 Pi uses bus 0
 
 def getShort(data, index):
   # return two bytes from data as a signed 16-bit value
@@ -54,13 +50,13 @@ def getUChar(data,index):
   result =  data[index] & 0xFF
   return result
 
-def readBme280Id(addr=DEVICE):
+def readBME280ID(addr=DEVICE):
   # Chip ID Register Address
   REG_ID     = 0xD0
   (chip_id, chip_version) = bus.read_i2c_block_data(addr, REG_ID, 2)
   return (chip_id, chip_version)
 
-def readBme280(addr=DEVICE):
+def readBME280All(addr=DEVICE):
   # Register Addresses
   REG_DATA = 0xF7
   REG_CONTROL = 0xF4
@@ -78,7 +74,7 @@ def readBme280(addr=DEVICE):
   bus.write_byte_data(addr, REG_CONTROL, control)
 
   # Read blocks of calibration data from EEPROM
-  # Page 22 data sheet
+  # See Page 22 data sheet
   cal1 = bus.read_i2c_block_data(addr, 0x88, 24)
   cal2 = bus.read_i2c_block_data(addr, 0xA1, 1)
   cal3 = bus.read_i2c_block_data(addr, 0xE1, 7)
@@ -123,7 +119,7 @@ def readBme280(addr=DEVICE):
   t_fine = var1+var2
   temperature = float(((t_fine * 5) + 128) >> 8);
 
-  # Refine pressure
+  # Refine pressure and adjust for temperature
   var1 = t_fine / 2.0 - 64000.0
   var2 = var1 * var1 * dig_P6 / 32768.0
   var2 = var2 + var1 * dig_P5 * 2.0
@@ -152,11 +148,11 @@ def readBme280(addr=DEVICE):
 
 def main():
 
-  (chip_id, chip_version) = readBme280Id()
+  (chip_id, chip_version) = readBME280ID()
   print "Chip ID     :", chip_id
   print "Version     :", chip_version
 
-  temperature,pressure,humidity = readBme280()
+  temperature,pressure,humidity = readBME280All()
 
   print "Temperature : ", temperature, "C"
   print "Pressure : ", pressure, "hPa"
