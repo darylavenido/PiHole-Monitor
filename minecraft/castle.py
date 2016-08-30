@@ -117,17 +117,17 @@ def CreateWindows(x,y,z,dir):
 #
 #--------------------------------------
   
-print "Create ground and moat"
+print("Create ground and moat")
 CreateLandscape(33,10,23)  
 
-print "Create outer walls"
+print("Create outer walls")
 CreateWalls(21,1,5,block.STONE_BRICK,True,True)
 
-print "Create inner walls"
+print("Create inner walls")
 CreateWalls(13,1,6,block.STONE_BRICK,True,True)
 
-print "Create Keep with 4 levels"
+print("Create Keep with 4 levels")
 CreateKeep(5,1,4)
 
-print "Position player on Keep's walkway" 
+print("Position player on Keep's walkway")
 mc.player.setPos(0,30,4)
