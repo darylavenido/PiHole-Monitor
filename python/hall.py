@@ -22,16 +22,6 @@ import RPi.GPIO as GPIO
 import time
 import datetime
 
-# Tell GPIO library to use GPIO references
-GPIO.setmode(GPIO.BCM)
-
-print "Setup GPIO pin as input"
-
-# Set Switch GPIO as input
-GPIO.setup(17 , GPIO.IN)
-GPIO.add_event_detect(17, GPIO.FALLING, callback=sensorCallback1)
-GPIO.add_event_detect(17, GPIO.RISING, callback=sensorCallback2)
-
 def sensorCallback1(channel):
   # Called if sensor output goes LOW
   timestamp = time.time()
@@ -58,7 +48,17 @@ def main():
 
   except KeyboardInterrupt:
     # Reset GPIO settings
-    GPIO.cleanup()
+    GPIO.cleanup()  
+  
+# Tell GPIO library to use GPIO references
+GPIO.setmode(GPIO.BCM)
+
+print "Setup GPIO pin as input"
+
+# Set Switch GPIO as input
+GPIO.setup(17 , GPIO.IN)
+GPIO.add_event_detect(17, GPIO.FALLING, callback=sensorCallback1)
+GPIO.add_event_detect(17, GPIO.RISING, callback=sensorCallback2)
 
 if __name__=="__main__":
    main()
