@@ -6,15 +6,11 @@
 # ultrasonic_1.py
 # Measure distance using an ultrasonic module
 #
-# Ultrasonic related posts:
-# http://www.raspberrypi-spy.co.uk/tag/ultrasonic/
-#
 # Author : Matt Hawkins
-# Date   : 16/10/2016
+# Date   : 09/01/2013
 # -----------------------
 
 # Import required Python libraries
-from __future__ import print_function
 import time
 import RPi.GPIO as GPIO
 
@@ -26,12 +22,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO_TRIGGER = 23
 GPIO_ECHO    = 24
 
-# Speed of sound in cm/s at temperature
-temperature = 20
-speedSound = 33100 + (0.6*temperature)
-
-print("Ultrasonic Measurement")
-print("Speed of sound is",speedSound/100,"m/s at ",temperature,"deg")
+print "Ultrasonic Measurement"
 
 # Set pins as output and input
 GPIO.setup(GPIO_TRIGGER,GPIO.OUT)  # Trigger
@@ -45,7 +36,6 @@ time.sleep(0.5)
 
 # Send 10us pulse to trigger
 GPIO.output(GPIO_TRIGGER, True)
-# Wait 10us
 time.sleep(0.00001)
 GPIO.output(GPIO_TRIGGER, False)
 start = time.time()
@@ -61,12 +51,12 @@ elapsed = stop-start
 
 # Distance pulse travelled in that time is time
 # multiplied by the speed of sound (cm/s)
-distance = elapsed * speedSound
+distance = elapsed * 34300
 
 # That was the distance there and back so halve the value
 distance = distance / 2
 
-print("Distance : {0:5.1f}".format(distance))
+print "Distance : %.1f" % distance
 
 # Reset GPIO settings
 GPIO.cleanup()
