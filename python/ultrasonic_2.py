@@ -82,6 +82,9 @@ GPIO.setup(GPIO_ECHO,GPIO.IN)      # Echo
 # Set trigger to False (Low)
 GPIO.output(GPIO_TRIGGER, False)
 
+# Allow module to settle
+time.sleep(0.5)
+
 # Wrap main content in a try block so we can
 # catch the user pressing CTRL-C and run the
 # GPIO cleanup function. This will also prevent
