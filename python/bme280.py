@@ -62,6 +62,7 @@ def readBME280All(addr=DEVICE):
   REG_CONTROL = 0xF4
   REG_CONFIG  = 0xF5
 
+  REG_CONTROL_HUM = 0xF2
   REG_HUM_MSB = 0xFD
   REG_HUM_LSB = 0xFE
 
@@ -69,6 +70,10 @@ def readBME280All(addr=DEVICE):
   OVERSAMPLE_TEMP = 2
   OVERSAMPLE_PRES = 2
   MODE = 1
+
+  # Oversample setting for humidity register - page 26
+  OVERSAMPLE_HUM = 2
+  bus.write_byte_data(addr, REG_CONTROL_HUM, OVERSAMPLE_HUM)
 
   control = OVERSAMPLE_TEMP<<5 | OVERSAMPLE_PRES<<2 | MODE
   bus.write_byte_data(addr, REG_CONTROL, control)
