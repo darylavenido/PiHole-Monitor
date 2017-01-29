@@ -113,6 +113,10 @@ def readBME280All(addr=DEVICE):
 
   dig_H6 = getChar(cal3, 6)
 
+  # Wait in ms (Datasheet Appendix B: Measurement time and current calculation)
+  wait_time = 1.25 + (2.3 x OVERSAMPLE_TEMP) + ((2.3 x OVERSAMPLE_PRES) + 0.575) + ((2.3 x OVERSAMPLE_HUM)+0.575)
+  time.sleep(wait_time/1000)  # Wait the required time  
+
   # Read temperature/pressure/humidity
   data = bus.read_i2c_block_data(addr, REG_DATA, 8)
   pres_raw = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
