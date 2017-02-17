@@ -10,7 +10,7 @@
 #  Read data from a digital pressure sensor.
 #
 # Author : Matt Hawkins
-# Date   : 15/04/2015
+# Date   : 17/02/2017
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -116,14 +116,14 @@ def readBmp180(addr=DEVICE):
 def main():
     
   (chip_id, chip_version) = readBmp180Id()
-  print "Chip ID     :", chip_id
-  print "Version     :", chip_version
+  print("Chip ID     : {0}".format(chip_id))
+  print("Version     : {0}".format(chip_version))
 
   print
   
   (temperature,pressure)=readBmp180()
-  print "Temperature : ", temperature, "C"
-  print "Pressure    : ", pressure, "mbar"
+  print("Temperature : {0}C".format(temperature))
+  print("Pressure    : {0}mbar".format(pressure))
   
 if __name__=="__main__":
    main()
