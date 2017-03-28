@@ -11,28 +11,25 @@
 # This script tests the sensor on GPIO17.
 #
 # Author : Matt Hawkins
-# Date   : 27/09/2015
+# Date   : 28/03/2017
 #
 # http://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
 
 # Import required libraries
-import RPi.GPIO as GPIO
 import time
 import datetime
+import RPi.GPIO as GPIO
 
-def sensorCallback1(channel):
-  # Called if sensor output goes LOW
+def sensorCallback(channel):
+  # Called if sensor output changes
   timestamp = time.time()
   stamp = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
-  print "Sensor LOW " + stamp
-
-def sensorCallback2(channel):
-  # Called if sensor output goes HIGH
-  timestamp = time.time()
-  stamp = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
-  print "Sensor HIGH " + stamp
+  if GPIO.input(channel):  
+    print("Sensor HIGH " + stamp)
+  else:
+    print("Sensor LOW " + stamp)
 
 def main():
   # Wrap main content in a try block so we can
@@ -53,12 +50,11 @@ def main():
 # Tell GPIO library to use GPIO references
 GPIO.setmode(GPIO.BCM)
 
-print "Setup GPIO pin as input"
+print("Setup GPIO pin as input")
 
 # Set Switch GPIO as input
 GPIO.setup(17 , GPIO.IN)
-GPIO.add_event_detect(17, GPIO.FALLING, callback=sensorCallback1)
-GPIO.add_event_detect(17, GPIO.RISING, callback=sensorCallback2)
+GPIO.add_event_detect(17, GPIO.BOTH, callback=sensorCallback, bouncetime=200)
 
 if __name__=="__main__":
    main()
