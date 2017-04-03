@@ -11,7 +11,7 @@
 # This script tests the sensor on GPIO17.
 #
 # Author : Matt Hawkins
-# Date   : 28/03/2017
+# Date   : 03/04/2017
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -26,9 +26,11 @@ def sensorCallback(channel):
   # Called if sensor output changes
   timestamp = time.time()
   stamp = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M:%S')
-  if GPIO.input(channel):  
+  if GPIO.input(channel):
+    # No magnet
     print("Sensor HIGH " + stamp)
   else:
+    # Magnet
     print("Sensor LOW " + stamp)
 
 def main():
@@ -45,12 +47,12 @@ def main():
 
   except KeyboardInterrupt:
     # Reset GPIO settings
-    GPIO.cleanup()  
-  
+    GPIO.cleanup()
+
 # Tell GPIO library to use GPIO references
 GPIO.setmode(GPIO.BCM)
 
-print("Setup GPIO pin as input")
+print("Setup GPIO pin as input on GPIO17")
 
 # Set Switch GPIO as input
 # Pull high by default
