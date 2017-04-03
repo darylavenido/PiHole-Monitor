@@ -53,7 +53,8 @@ GPIO.setmode(GPIO.BCM)
 print("Setup GPIO pin as input")
 
 # Set Switch GPIO as input
-GPIO.setup(17 , GPIO.IN)
+# Pull high by default
+GPIO.setup(17 , GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(17, GPIO.BOTH, callback=sensorCallback, bouncetime=200)
 
 if __name__=="__main__":
