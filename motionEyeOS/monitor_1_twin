@@ -19,3 +19,4 @@ else
     GPIOB_text="LOW"
 fi
 echo "$GPIOA:$GPIOA_text  $GPIOB:$GPIOB_text"
+echo 1 1>&2
