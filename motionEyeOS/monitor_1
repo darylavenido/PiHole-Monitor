@@ -1,0 +1,10 @@
+#!/bin/bash
+
+GPIO=17
+test -e /sys/class/gpio/gpio$GPIO || (echo $GPIO > /sys/class/gpio/export && echo in > /sys/class/gpio/gpio$GPIO/direction)
+val=$(cat /sys/class/gpio/gpio$GPIO/value)
+if [ "$val" == "1" ]; then
+    echo "$GPIO:HIGH"
+else
+    echo "$GPIO:LOW"
+fi
