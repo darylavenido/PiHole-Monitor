@@ -6,17 +6,19 @@
 # /_/|_/_/  /_/___/ .__/\_, /
 #                /_/   /___/
 #
-#          10_led_running_lights_2.py
-#  Light up 10 LEDs in sequence. Can be called with two
-# optional command line options. One to specify the sequence
-# and one to specify the delay in seconds. Works with Python 2 and 3.
+#          10_led_running_lights_3.py
+#
+# Light up 10 LEDs in different sequences. Can be called with two
+# optional command line options. One to specify the number of loops
+# per sequence and one to specify the delay in seconds.
+# Works with Python 2 and 3.
 #
 # Example usage :
-# python 10_led_running_lights_2 3 0.4
-# would run sequence 3 with a 0.4 second delay between each LED.
+# python 10_led_running_lights_3 5 0.2
+# would run each sequence for 5 loops with a 0.2 second delay between each LED.
 #
 # Author : Matt Hawkins
-# Date   : 01/05/2017
+# Date   : 02/05/2017
 #
 # http://www.raspberrypi-spy.co.uk/2012/06/knight-rider-cylon-lights-for-the-raspberry-pi/
 #
@@ -28,6 +30,7 @@ import sys
 import time
 
 def populateSeq(index):
+  # Take a number and return sequence list
   Seq = []
   if index==1:
     # One LED
@@ -99,13 +102,10 @@ RpiGPIO = [4,17,22,9,11,23,24,25,8,7]
 
 # Set all pins as output
 for pin in RpiGPIO:
-  print("Setup pins")
+  print("Setup GPIO"+str(pin)+" as output")
   GPIO.setup(pin,GPIO.OUT)
 
-
-
-# Define some sequences
-
+# Handle command line arguments
 if len(sys.argv)==3:
   try:
     SeqLoops = int(sys.argv[1])
@@ -121,10 +121,12 @@ SeqCount = 0
   
 # Start main loop
 while True:
+
   SeqCount=SeqCount+1
   if SeqCount>3:
     SeqCount=1
 
+  # Populae list with sequence
   Seq = populateSeq(SeqCount)
   StepCount = len(Seq)
   StepCounter = 0
