@@ -3,11 +3,13 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-  return "<html><body><h1>This is a test site running under Flask</h1></body></html>"
+  data=['Index Page','My Header','red']
+  return render_template('template1.html',data=data)
 
 @app.route("/hello")
 def hello():
-  return "<html><body><h1>This is the hello page</h1></body></html>"
+  data=['Hello Page','My Header','orange']
+  return render_template('template1.html',data=data)
  
 if __name__ == "__main__":
   app.run(host='0.0.0.0',debug=True)
