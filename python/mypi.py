@@ -13,25 +13,16 @@
 #  - GPU temperature
 #
 # Author : Matt Hawkins
-# Date   : 12/03/2016
+# Date   : 21/08/2017
 #
 # http://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
-
 import platform
 import subprocess
 import os
 
 # Define functions
-
-def getMAC(interface='eth0'):
-  # Return the MAC address of interface
-  try:
-    line = open('/sys/class/net/%s/address' %interface).read()
-  except:
-    line = "None"
-  return line[0:17]
 
 def getSerial():
   # Extract serial from cpuinfo file
@@ -61,6 +52,25 @@ def getRevision():
 
   return myrevision
 
+def getEthName():
+  # Get name of Ethernet interface
+  try:
+    for root,dirs,files in os.walk('/sys/class/net'):
+      for dir in dirs:
+        if dir[:3]=='enx' or dir[:3]=='eth':
+          interface=dir
+  except:
+    interface="None"
+  return interface
+  
+def getMAC(interface='eth0'):
+  # Return the MAC address of named Ethernet interface
+  try:
+    line = open('/sys/class/net/%s/address' %interface).read()
+  except:
+    line = "None"
+  return line[0:17]
+  
 def getIP(interface='eth0'):
   # Read ifconfig.txt and extract IP address
   try:
@@ -72,9 +82,10 @@ def getIP(interface='eth0'):
     line = line.strip()
     f.close()
 
-    if line.startswith('inet addr:'):
-      a,b,c = line.partition('inet addr:')
+    if line.startswith('inet '):
+      a,b,c = line.partition('inet ')
       a,b,c = c.partition(' ')
+      a=a.replace('addr:','')
     else:
       a = 'None'
 
@@ -107,17 +118,19 @@ def getRAM():
   # free -m
   output = subprocess.check_output(['free','-m'])
   lines = output.splitlines()
-  line  = lines[1]
+  line  = str(lines[1])
   ram = line.split()
-  return (str(ram[1]),str(ram[2]),str(ram[3]))
+  # total/free  
+  return (ram[1],ram[3])
 
 def getDisk():
   # df -h
   output = subprocess.check_output(['df','-h'])
   lines = output.splitlines()
-  line  = lines[1]
+  line  = str(lines[1])
   disk  = line.split()
-  return disk
+  # total/free
+  return (disk[1],disk[3])
 
 def getCPUspeed():
   # Get CPU frequency
@@ -190,7 +203,7 @@ if __name__ == '__main__':
 
   myRAM = getRAM()
   myDisk = getDisk()
-
+  ethName = getEthName()
   # Script has been called directly
   print("----------------------------------------")
   print("System               : " + platform.platform())
@@ -202,14 +215,15 @@ if __name__ == '__main__':
   print("SPI enabled          : " + getSPI())
   print("Bluetooth enabled    : " + getBT())
   print("----------------------------------------")
-  print("Ethernet MAC Address : " + getMAC('eth0'))
-  print("Ethernet IP Address  : " + getIP('eth0'))
+  print("Ethernet Name        : " + ethName)  
+  print("Ethernet MAC Address : " + getMAC(ethName))
+  print("Ethernet IP Address  : " + getIP(ethName))
   print("Wireless MAC Address : " + getMAC('wlan0'))
   print("Wireless IP Address  : " + getIP('wlan0'))
   print("----------------------------------------")
   print("CPU Clock            : " + getCPUspeed() + "MHz")
-  print("CPU Temperature      : " + getCPUtemp() + "\xb0" +"C")
-  print("GPU Temperature      : " + getGPUtemp() + "\xb0" +"C")
-  print("RAM (Available)      : " + myRAM[0] + "MB (" + myRAM[2] + "MB)")
-  print("Disk (Available)     : " + myDisk[1] + " (" + myDisk[3] + ")")
+  print("CPU Temperature      : " + getCPUtemp() + u"\u00b0" +"C")
+  print("GPU Temperature      : " + getGPUtemp() + u"\u00b0" +"C")
+  print("RAM (Available)      : " + myRAM[0] + "MB (" + myRAM[1] + "MB)")
+  print("Disk (Available)     : " + myDisk[0] + " (" + myDisk[1] + ")")
   print("----------------------------------------")
