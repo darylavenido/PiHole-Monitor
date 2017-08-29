@@ -28,6 +28,8 @@ if len(sys.argv)==5:
   mytoken=sys.argv[4]
   mymessage="Your "+sys.argv[1]+" camera has just rebooted"
 
+  print(mytitle)
+  
   conn = httplib.HTTPSConnection("api.pushover.net:443")
   conn.request("POST", "/1/messages.json",
     urllib.urlencode({
