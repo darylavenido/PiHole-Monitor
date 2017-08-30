@@ -58,7 +58,7 @@ def getRevision():
 def getModel():
   # Extract Pi Model string
   try:
-    mymodel = open('/sys/firmware/devicetree/base/model').readline()
+    mymodel = open('/proc/device-tree/model').readline()
   except:
     mymodel = "Error"
 
