@@ -5,15 +5,18 @@
 #  Functions to display Pi properties
 #
 #  If called directly outputs :
+#  - Pi Model
 #  - Revision number
 #  - Serial number
+#  - Python version
+#  - I2C,SPI and Bluetooth status
 #  - Mac address
 #  - IP address
 #  - CPU temperature
 #  - GPU temperature
 #
 # Author : Matt Hawkins
-# Date   : 21/08/2017
+# Date   : 30/08/2017
 #
 # http://www.raspberrypi-spy.co.uk/
 #
@@ -51,6 +54,15 @@ def getRevision():
     myrevision = "Error"
 
   return myrevision
+
+def getModel():
+  # Extract Pi Model string
+  try:
+    mymodel = open('/sys/firmware/devicetree/base/model').readline()
+  except:
+    mymodel = "Error"
+
+  return mymodel
 
 def getEthName():
   # Get name of Ethernet interface
@@ -206,12 +218,14 @@ if __name__ == '__main__':
   ethName = getEthName()
   # Script has been called directly
   print("----------------------------------------")
+  print("Pi Model             : " + getModel())
+  print("----------------------------------------")
   print("System               : " + platform.platform())
   print("Revision Number      : " + getRevision())
   print("Serial Number        : " + getSerial())
   print("Python version       : " + platform.python_version())
   print("----------------------------------------")
-  print("i2c enabled          : " + getI2C())
+  print("I2C enabled          : " + getI2C())
   print("SPI enabled          : " + getSPI())
   print("Bluetooth enabled    : " + getBT())
   print("----------------------------------------")
