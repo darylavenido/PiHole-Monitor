@@ -65,6 +65,6 @@ try:
   s = smtplib.SMTP(smtp_server)
   s.login(smtp_user,smtp_pass)
   s.sendmail(addr_from, addr_to, msg.as_string())
+  s.quit()
 except:
   print("There was an error sending the email. Check the smtp settings.")
-s.quit()
