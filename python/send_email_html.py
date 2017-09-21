@@ -1,13 +1,18 @@
 #!/usr/bin/python
 #--------------------------------------
+#    ___  ___  _ ____
+#   / _ \/ _ \(_) __/__  __ __
+#  / , _/ ___/ /\ \/ _ \/ // /
+# /_/|_/_/  /_/___/ .__/\_, /
+#                /_/   /___/
 #
 #           send_email_html.py
 #  Script to send an HTML email.
 #
 # Author : Matt Hawkins
-# Date   : 12/02/2015
+# Date   : 21/09/2017
 #
-# http://www.raspberrypi-spy.co.uk/
+# https://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
 
@@ -56,7 +61,10 @@ msg.attach(part1)
 msg.attach(part2)
  
 # Send the message via an SMTP server
-s = smtplib.SMTP(smtp_server)
-s.login(smtp_user,smtp_pass)
-s.sendmail(addr_from, addr_to, msg.as_string())
+try:
+  s = smtplib.SMTP(smtp_server)
+  s.login(smtp_user,smtp_pass)
+  s.sendmail(addr_from, addr_to, msg.as_string())
+except:
+  print("There was an error sending the email. Check the smtp settings.")
 s.quit()
