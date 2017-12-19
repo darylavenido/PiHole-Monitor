@@ -16,9 +16,9 @@
 #  - GPU temperature
 #
 # Author : Matt Hawkins
-# Date   : 30/08/2017
+# Date   : 06/12/2017
 #
-# http://www.raspberrypi-spy.co.uk/
+# https://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
 import platform
@@ -26,6 +26,15 @@ import subprocess
 import os
 
 # Define functions
+
+def getModel():
+  # Extract Pi Model string
+  try:
+    mymodel = open('/proc/device-tree/model').readline()
+  except:
+    mymodel = "Error"
+
+  return mymodel
 
 def getSerial():
   # Extract serial from cpuinfo file
@@ -54,15 +63,6 @@ def getRevision():
     myrevision = "Error"
 
   return myrevision
-
-def getModel():
-  # Extract Pi Model string
-  try:
-    mymodel = open('/proc/device-tree/model').readline()
-  except:
-    mymodel = "Error"
-
-  return mymodel
 
 def getEthName():
   # Get name of Ethernet interface
@@ -148,6 +148,7 @@ def getCPUspeed():
   # Get CPU frequency
   try:
     output = subprocess.check_output(['vcgencmd','get_config','arm_freq'])
+    output = output.decode()
     lines = output.splitlines()
     line  = lines[0]
     freq = line.split('=')
@@ -205,18 +206,19 @@ def getBT():
     c=subprocess.Popen("lsmod",stdout=subprocess.PIPE)
     gr=subprocess.Popen(["grep" ,"bluetooth"],stdin=c.stdout,stdout=subprocess.PIPE)
     output = gr.communicate()[0]
-    if output[:9]=='bluetooth':
+    if output[:9]==b'bluetooth':
       bt = "True"
   except:
     pass
   return bt
 
 if __name__ == '__main__':
+  # Script has been called directly
 
   myRAM = getRAM()
   myDisk = getDisk()
   ethName = getEthName()
-  # Script has been called directly
+
   print("----------------------------------------")
   print("Pi Model             : " + getModel())
   print("----------------------------------------")
