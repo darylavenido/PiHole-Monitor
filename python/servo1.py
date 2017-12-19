@@ -15,7 +15,7 @@
 # Author : Matt Hawkins
 # Date   : 19/12/2017
 #
-# http://www.raspberrypi-spy.co.uk/tag/dht11/
+# https://www.raspberrypi-spy.co.uk/tag/servo/
 #
 #--------------------------------------
 from gpiozero import Servo
