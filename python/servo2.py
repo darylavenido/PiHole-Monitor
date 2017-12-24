@@ -15,7 +15,7 @@
 # Use CTRL-C to break out of While loop.
 #
 # Author : Matt Hawkins
-# Date   : 19/12/2017
+# Date   : 23/12/2017
 #
 # https://www.raspberrypi-spy.co.uk/tag/servo/
 #
@@ -37,15 +37,15 @@ minPW=0.55/1000
 servo = Servo(myGPIO,min_pulse_width=minPW,max_pulse_width=maxPW)
 
 while True:
-    servo.mid()
-    print("mid")
-    sleep(0.5)
-    servo.min()
-    print("min")
-    sleep(1)
-    servo.mid()
-    print("mid")
-    sleep(0.5)
-    servo.max()
-    print("max")
-    sleep(1)
+  servo.mid()
+  print("mid")
+  sleep(0.5)
+  servo.min()
+  print("min")
+  sleep(1)
+  servo.mid()
+  print("mid")
+  sleep(0.5)
+  servo.max()
+  print("max")
+  sleep(1)
