@@ -13,7 +13,7 @@
 # Use CTRL-C to break out of While loop.
 #
 # Author : Matt Hawkins
-# Date   : 23/12/2017
+# Date   : 01/01/2018
 #
 # https://www.raspberrypi-spy.co.uk/tag/servo/
 #
@@ -25,16 +25,19 @@ myGPIO=17
 
 servo = Servo(myGPIO)
 
+print("Using GPIO17")
+print("Using Gpiozero defaults for the servo class")
+
 while True:
   servo.mid()
-  print("mid")
-  sleep(0.5)
+  print("Set to middle position")
+  sleep(1)
   servo.min()
-  print("min")
+  print("Set to minimum position")
   sleep(1)
   servo.mid()
-  print("mid")
-  sleep(0.5)
+  print("Set to middle position")
+  sleep(1)
   servo.max()
-  print("max")
+  print("Set to maximum position")
   sleep(1)
