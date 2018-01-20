@@ -16,7 +16,7 @@
 # Use CTRL-C to break out of While loop.
 #
 # Author : Matt Hawkins
-# Date   : 01/01/2018
+# Date   : 20/01/2018
 #
 # https://www.raspberrypi-spy.co.uk/tag/servo/
 #
@@ -30,10 +30,11 @@ myGPIO=17
 # To increase range of movement:
 #   increase maxPW from default of 2.0
 #   decrease minPW from default of 1.0
-# Use increments of 0.05 and check values work with
-# your servo.
-maxPW=2.45/1000
-minPW=0.55/1000
+# Change myCorrection using increments of 0.05 and
+# check the value works with your servo.
+myCorrection=0.45
+maxPW=(2.0+myCorrection)/1000
+minPW=(1.0-myCorrection)/1000
 
 servo = Servo(myGPIO,min_pulse_width=minPW,max_pulse_width=maxPW)
 
