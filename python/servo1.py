@@ -23,21 +23,21 @@ from time import sleep
 
 myGPIO=17
 
-servo = Servo(myGPIO)
+myServo = Servo(myGPIO)
 
 print("Using GPIO17")
 print("Using Gpiozero defaults for the servo class")
 
 while True:
-  servo.mid()
+  myServo.mid()
   print("Set to middle position")
   sleep(1)
-  servo.min()
+  myServo.min()
   print("Set to minimum position")
   sleep(1)
-  servo.mid()
+  myServo.mid()
   print("Set to middle position")
   sleep(1)
-  servo.max()
+  myServo.max()
   print("Set to maximum position")
   sleep(1)

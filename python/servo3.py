@@ -35,7 +35,7 @@ myGPIO=17
 maxPW=2.45/1000
 minPW=0.55/1000
 
-servo = Servo(myGPIO,min_pulse_width=minPW,max_pulse_width=maxPW)
+myServo = Servo(myGPIO,min_pulse_width=minPW,max_pulse_width=maxPW)
 
 print("Using GPIO17")
 print("Max pulse width is set to 2.45 ms")
@@ -46,13 +46,13 @@ while True:
   print("Set value range -1.0 to +1.0")
   for value in range(0,21):
     value2=(float(value)-10)/10
-    servo.value=value2
+    myServo.value=value2
     print("Servo value set to "+str(value2))
     sleep(1)
 
   print("Set value range +1.0 to -1.0")
   for value in range(20,-1,-1):
     value2=(float(value)-10)/10
-    servo.value=value2
+    myServo.value=value2
     print("Servo value set to "+str(value2))
     sleep(1)
