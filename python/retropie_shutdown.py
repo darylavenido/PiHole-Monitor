@@ -19,7 +19,7 @@
 # for more information.
 #
 # Author : Matt Hawkins
-# Date   : 10/03/2018
+# Date   : 18/03/2018
 #
 #--------------------------------------
 
@@ -37,6 +37,8 @@ def buttonHeld():
   print("Button pressed for "+ str(myHoldTime) +" seconds")
   check_call(['sudo', 'poweroff'])
 
+# Create a button object and define what function is
+# run when it is held down for the hold_time
 button=Button(myGPIO,pull_up=False,hold_time=myHoldTime)
 button.when_held=buttonHeld
 
