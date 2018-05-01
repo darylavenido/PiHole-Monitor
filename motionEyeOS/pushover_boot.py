@@ -15,6 +15,9 @@
 #
 # http://www.raspberrypi-spy.co.uk/tag/motioneyeos/
 #
+# Based on Python examples here:
+# https://pushover.net/faq#library
+#
 #--------------------------------------
 import httplib, urllib
 import sys
@@ -29,7 +32,7 @@ if len(sys.argv)==5:
   mymessage="Your "+sys.argv[1]+" camera has just rebooted"
 
   print(mytitle)
-  
+
   conn = httplib.HTTPSConnection("api.pushover.net:443")
   conn.request("POST", "/1/messages.json",
     urllib.urlencode({
