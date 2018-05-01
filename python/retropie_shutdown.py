@@ -12,7 +12,8 @@
 # system to shutdown by pressing a button
 # without needing to use the menu.
 # 
-# It uses the GpioZero library.
+# It uses the GpioZero library and is based on:
+# https://gpiozero.readthedocs.io/en/stable/recipes.html#shutdown-button
 #
 # Please see https://www.raspberrypi-spy.co.uk/
 # for more information.
