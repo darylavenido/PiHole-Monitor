@@ -11,9 +11,9 @@
 # This script tests the sensor on GPIO17.
 #
 # Author : Matt Hawkins
-# Date   : 03/04/2017
+# Date   : 08/05/2018
 #
-# http://www.raspberrypi-spy.co.uk/
+# https://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
 
@@ -39,6 +39,9 @@ def main():
   # GPIO cleanup function. This will also prevent
   # the user seeing lots of unnecessary error
   # messages.
+
+  # Get initial reading
+  sensorCallback(17)
 
   try:
     # Loop until users quits with CTRL-C
