@@ -1,35 +1,54 @@
 #!/usr/bin/python
-#+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-#|R|a|s|p|b|e|r|r|y|P|i|-|S|p|y|.|c|o|.|u|k|
-#+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+#--------------------------------------
+#    ___  ___  _ ____
+#   / _ \/ _ \(_) __/__  __ __
+#  / , _/ ___/ /\ \/ _ \/ // /
+# /_/|_/_/  /_/___/ .__/\_, /
+#                /_/   /___/
 #
-# pi_camera_options.py
+# pi_camera_options2.py
 # Takes a sequence of photos with the Pi camera
-# using a range of Exposure and White Balance
-# settings.
+# using the PiCamera library with a range of Exposure and
+# White Balance settings.
 #
-# Project URL :
-# http://www.raspberrypi-spy.co.uk/2013/06/testing-multiple-pi-camera-options-with-python/
+# Please see :
+# https://www.raspberrypi-spy.co.uk/2013/06/testing-multiple-pi-camera-options-with-python/
+# for more information.
 #
 # PiCamera library docs
 # http://picamera.readthedocs.io/
 #
 # Author : Matt Hawkins
-# Date   : 15/01/2017
+# Date   : 14/06/2018
+#
+#--------------------------------------
+from __future__ import print_function
 import os
 import time
 import picamera
 
-# Full list of Exposure and White Balance options
-#list_ex  = ['off','auto','night','nightpreview','backlight',
-#            'spotlight','sports','snow','beach','verylong',
-#            'fixedfps','antishake','fireworks']
-#list_awb = ['off','auto','sunlight','cloudy','shade','tungsten',
-#            'fluorescent','incandescent','flash','horizon']
+# Get valid Exposure and White Balance values
+valid_ex  = picamera.PiCamera.EXPOSURE_MODES
+valid_awb = picamera.PiCamera.AWB_MODES
+
+# Valid Exposure and AWB values
+print("\nValid exposure values:\n[", end='')
+for value in valid_ex:
+    print("'"+value+"',", end='')
+print("]")
+
+print("\nValid AWB values:\n[", end='')
+for value in valid_awb:
+    print("'"+value+"',", end='')
+print("]")
 
 # Test list of Exposure and White Balance options. 9 photos.
 list_ex  = ['off','auto','backlight']
 list_awb = ['off','auto','sunlight']
+
+# Specified Exposure and AWB values
+print("\nSpecified exposure values:",list_ex)
+print("Specified AWB values:",list_awb)
 
 # Photo dimensions and rotation
 photo_width  = 640
@@ -56,7 +75,7 @@ camera.annotate_foreground = picamera.Color('white')
 # Lets start taking photos!
 try:
 
-  print("Starting photo sequence")
+  print("\nStarting photo sequence")
 
   for ex in list_ex:
     for awb in list_awb:
