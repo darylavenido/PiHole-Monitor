@@ -56,7 +56,7 @@ def extract(output,startstr,stopstr):
 def getParameters(data):
   # Extract each parameter from text output
   parameters={}
-  essid=extract(data,"ESSID:\"","\"")
+  essid=extract(data,"ESSID:"," ")
   mode=extract(data,"Mode:","Frequency")
   frequency=extract(data,"Frequency:","Access")
   access=extract(data,"Access Point:","|")
@@ -82,15 +82,15 @@ def getParameters(data):
 
 def printParameters(parameters):
   # Print all parameters
-  print("ESSID      : "+parameters["ESSID"])
-  print("Mode       : "+parameters["Mode"])
-  print("Frequency    : "+parameters["Frequency"])
-  print("Access Point   : "+parameters["Access Point"])
-  print("Bit Rate     : "+parameters["Bit Rate"])
-  print("Tx-Power     : "+parameters["Tx-Power"])
+  print("ESSID            : "+parameters["ESSID"])
+  print("Mode             : "+parameters["Mode"])
+  print("Frequency        : "+parameters["Frequency"])
+  print("Access Point     : "+parameters["Access Point"])
+  print("Bit Rate         : "+parameters["Bit Rate"])
+  print("Tx-Power         : "+parameters["Tx-Power"])
   print("Power Management : "+parameters["Power Management"])
-  print("Link Quality   : "+parameters["Link Quality"])
-  print("Signal level   : "+parameters["Signal Level"])
+  print("Link Quality     : "+parameters["Link Quality"])
+  print("Signal level     : "+parameters["Signal Level"])
 
 def main():
   output=getOutput()
