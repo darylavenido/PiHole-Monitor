@@ -36,6 +36,7 @@ def getOutput(interface='wlan0'):
     output=subprocess.check_output(['iwconfig', interface])
     output=output.decode("utf-8") 
     output=output.replace('\n', '|')
+    output=output.replace('"', '')    
   except:
     output="x"
 
