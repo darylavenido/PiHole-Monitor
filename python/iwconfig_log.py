@@ -16,7 +16,7 @@
 # for more information.
 #
 # Author : Matt Hawkins
-# Date   : 23/06/2018
+# Date   : 25/06/2018
 #
 #--------------------------------------
 
@@ -24,7 +24,7 @@ import time
 import logging
 import iwconfig as iw
 
-#interface='wlx00e04d04fff7'
+interface='wlan0'
 
 outputFile = open("iwconfig.log", "w")
 
