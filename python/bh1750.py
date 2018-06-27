@@ -46,12 +46,11 @@ ONE_TIME_LOW_RES_MODE = 0x23
 #bus = smbus.SMBus(0) # Rev 1 Pi uses 0
 bus = smbus.SMBus(1)  # Rev 2 Pi uses 1
 
-def convertToNumber(data,decimals=2):
+def convertToNumber(data):
   # Simple function to convert 2 bytes of data
   # into a decimal number. Optional parameter 'decimals'
   # will round to specified number of decimal places.
   result=(data[1] + (256 * data[0])) / 1.2
-  result=round(result,decimals)
   return (result)
 
 def readLight(addr=DEVICE):
@@ -63,7 +62,7 @@ def main():
 
   while True:
     lightLevel=readLight()
-    print("Light Level : " + str(lightLevel) + " lx")
+    print("Light Level : " + format(lightLevel,'.2f') + " lx")
     time.sleep(0.5)
 
 if __name__=="__main__":
