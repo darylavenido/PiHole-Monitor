@@ -32,7 +32,7 @@ username = 'joebloggs@example.com'
 # Set YOUR unique API hash (NOT API Key)
 # It is available from the docs page
 # https://control.txtlocal.co.uk/docs/
-hash = '1234567890abcdefghijklmnopqrstuvwxyz1234'
+apihash = '1234567890abcdefghijklmnopqrstuvwxyz1234'
 
 # Set a sender name.
 # Sender name must alphanumeric and 
@@ -62,7 +62,7 @@ message = 'Test message sent from my Raspberry Pi'
 
 values = {'test'    : test_flag,
           'username': username,
-          'hash'    : hash,
+          'hash'    : apihash,
           'message' : message,
           'sender'  : sender,
           'numbers' : numbers }
