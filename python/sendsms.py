@@ -1,15 +1,26 @@
 #!/usr/bin/python
-#-----------------------------------
-# Send SMS Text Message using Python
+#-------------------------------------------------------------------------------
+#    ___  ___  _ ____
+#   / _ \/ _ \(_) __/__  __ __
+#  / , _/ ___/ /\ \/ _ \/ // /
+# /_/|_/_/  /_/___/ .__/\_, /
+#                /_/   /___/
 #
-# Author : Matt Hawkins
-# Site   : http://www.raspberrypi-spy.co.uk/
-# Date   : 01/04/2016
+# WiFi Monitoring Script Example
+#
+# Send SMS Text Message using Python
 #
 # Requires account with TxtLocal
 # http://www.txtlocal.co.uk/?tlrx=114032
 #
-#-----------------------------------
+# Please see :
+# https://www.raspberrypi-spy.co.uk/2012/08/sending-sms-text-messages-using-python/
+# for more information.
+#
+# Author : Matt Hawkins
+# Date   : 29/06/2018
+#
+#-------------------------------------------------------------------------------
 
 # Import required libraries
 import urllib      # URL functions
@@ -18,7 +29,7 @@ import urllib2     # URL functions
 # Set YOUR TextLocal username
 username = 'joebloggs@example.com'
 
-# Set YOUR unique API hash
+# Set YOUR unique API hash (NOT API Key)
 # It is available from the docs page
 # https://control.txtlocal.co.uk/docs/
 hash = '1234567890abcdefghijklmnopqrstuvwxyz1234'
@@ -50,24 +61,24 @@ message = 'Test message sent from my Raspberry Pi'
 #-----------------------------------------
 
 values = {'test'    : test_flag,
-          'uname'   : username,
+          'username': username,
           'hash'    : hash,
           'message' : message,
-          'from'    : sender,
-          'selectednums' : numbers }
+          'sender'  : sender,
+          'numbers' : numbers }
 
-url = 'http://www.txtlocal.com/sendsmspost.php'
+url = 'https://api.txtlocal.com/send/'
 
 postdata = urllib.urlencode(values)
 req = urllib2.Request(url, postdata)
 
-print 'Attempt to send SMS ...'
+print('Attempt to send SMS ...')
 
 try:
   response = urllib2.urlopen(req)
   response_url = response.geturl()
   if response_url==url:
-    print 'SMS sent!'
+    print('SMS sent!')
 except urllib2.URLError, e:
-  print 'Send failed!'
-  print e.reason
+  print('Send failed!')
+  print(e.reason)
