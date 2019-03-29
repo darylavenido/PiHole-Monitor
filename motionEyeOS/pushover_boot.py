@@ -11,9 +11,9 @@
 #  Use with userinit.sh
 #
 # Author : Matt Hawkins
-# Date   : 29/08/2017
+# Date   : 29/03/2019
 #
-# http://www.raspberrypi-spy.co.uk/tag/motioneyeos/
+# https://www.raspberrypi-spy.co.uk/tag/motioneyeos/
 #
 # Based on Python examples here:
 # https://pushover.net/faq#library
