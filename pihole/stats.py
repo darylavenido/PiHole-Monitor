@@ -7,12 +7,12 @@
 #                /_/   /___/
 #
 # Project : Pi-Hole Status Screen
-# File    : status.py
+# File    : stats.py
 #
 # This is the main script.
 #
 # Author : Matt Hawkins
-# Date   : 15/06/2019
+# Date   : 16/06/2019
 # Source : https://bitbucket.org/MattHawkinsUK/rpispy-misc/src/master/pihole/
 #
 # Additional details here:
@@ -44,7 +44,7 @@ def button_presssed():
   else:
     mode=1
 
-# Configure button connected to GPIO21 (Pin 40)
+# Configure button connected to GPIO21 (Pin 40) and Ground (Pin 39)
 ButtonGPIO=21
 button = Button(ButtonGPIO)
 button.when_pressed = button_presssed
@@ -70,9 +70,6 @@ image = Image.new('1', (width, height))
 # Get drawing object to draw on image.
 draw = ImageDraw.Draw(image)
 
-# Draw a black filled box to clear the image.
-#draw.rectangle((0,0,width,height), outline=0, fill=0)
-
 # Draw some shapes.
 # First define some constants to allow easy resizing of shapes.
 padding = 0
@@ -86,8 +83,9 @@ x = 0
 font = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf',15)
 font2 = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf',40)
 
-# Show Start Scrript text
+# Draw a black filled box to clear the image.
 draw.rectangle((0,0,width,height), outline=0, fill=0)
+# Show Start Script text
 draw.text((x, top), "Start Script",  font=font, fill=255)
 disp.image(image)
 disp.display()
