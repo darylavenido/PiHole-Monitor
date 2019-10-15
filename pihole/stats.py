@@ -108,7 +108,7 @@ disp.display()
 
 # Default mode, show large percentage
 mode=0
-counter=30
+counter=1
 
 while True:
 
