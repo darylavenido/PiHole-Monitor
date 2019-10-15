@@ -113,9 +113,8 @@ counter=30
 while True:
 
   # As counter cycles from 1-30 we generate LED value
-  # using SIN which will give a value of 0 to 1 to 0
-  led.value=sin(radians(counter*6))
-
+  led.value=counter/30
+  
   if mode==0 and counter>29:
 
     # Get Pi-Hole data
