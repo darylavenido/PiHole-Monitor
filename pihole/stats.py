@@ -182,7 +182,7 @@ while True:
     time.sleep(6)
     
     mode=0
-    counter=30
+    counter=29
 
   counter=counter+1
   time.sleep(1)
