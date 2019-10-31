@@ -9,21 +9,29 @@
 # Project : Pi-Hole Status Screen
 # File    : stats.py
 #
-# This is the main script.
+# Script to provide a status screen for a Pi-Hole system.
+# Requires an I2C OLED screen, momentary button and an LED with current limiting resistor.
 #
 # Author : Matt Hawkins
-# Date   : 16/06/2019
+# Date   : 15/10/2019
 # Source : https://bitbucket.org/MattHawkinsUK/rpispy-misc/src/master/pihole/
 #
 # Additional details here:
 # https://www.raspberrypi-spy.co.uk/
 #
+# gpiozero Button reference:
+# https://gpiozero.readthedocs.io/en/stable/recipes.html#button
+#
+# gpiozero LED PWM reference:
+# https://gpiozero.readthedocs.io/en/stable/recipes.html#led-with-variable-brightness
+#
 #-----------------------------------------------------------
 
 # Standard libraries
 import time
-import requests
+import math
 import json
+import requests
 import subprocess
 
 # Graphics libraries
@@ -34,8 +42,9 @@ from PIL import ImageFont
 # Adafruit library for I2C OLED screen
 import Adafruit_SSD1306
 
-# GPIOZero used to handle button
+# GPIOZero functions for buttons and LEDs
 from gpiozero import Button
+from gpiozero import PWMLED
 
 def button_presssed():
   global mode
@@ -44,10 +53,17 @@ def button_presssed():
   else:
     mode=1
 
-# Configure button connected to GPIO21 (Pin 40) and Ground (Pin 39)
+# Define GPIO pins used by button and LED
 ButtonGPIO=21
+LEDGPIO=24
+
+# Configure button connected to GPIO21 (Pin 40) and Ground (Pin 39)
 button = Button(ButtonGPIO)
 button.when_pressed = button_presssed
+
+# Configure LED connected to GPIO24 (Pin 18) and Ground (Pin 20)
+led = PWMLED(LEDGPIO)
+led.value=0
 
 # 128x64 display with hardware I2C:
 disp = Adafruit_SSD1306.SSD1306_128_64(rst=None)
@@ -92,11 +108,14 @@ disp.display()
 
 # Default mode, show large percentage
 mode=0
-counter=28
+counter=1
 
 while True:
 
-  if mode==0 and counter>30:
+  # As counter cycles from 1-30 we generate LED value
+  led.value=counter/30
+  
+  if mode==0 and counter>29:
 
     # Get Pi-Hole data
     r = requests.get("http://localhost/admin/api.php?summary")
@@ -123,6 +142,7 @@ while True:
     # Draw a black filled box to clear the image.
     draw.rectangle((0,0,width,height), outline=0, fill=0) 
 
+    # Get system data
     # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
     cmd = "hostname -I | cut -d\' \' -f1"
     IP = subprocess.check_output(cmd, shell = True )
@@ -141,6 +161,7 @@ while True:
     # Draw a black filled box to clear the image.
     draw.rectangle((0,0,width,height), outline=0, fill=0) 
 
+    # Get system data
     # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
     cmd = "top -bn1 | grep load | awk '{printf \"C: %.2f\", $(NF-2)}'"
     CPU = subprocess.check_output(cmd, shell = True )
@@ -152,8 +173,8 @@ while True:
     # Display system stats    
     draw.text((x, top),       str(IP.decode('UTF-8')),  font=font, fill=255)
     draw.text((x, top+16),    str(CPU.decode('UTF-8')), font=font, fill=255)
-    draw.text((x, top+32),    str(MemUsage.decode('UTF-8')),  font=font, fill=255)
-    draw.text((x, top+48),    str(Disk.decode('UTF-8')),  font=font, fill=255)
+    draw.text((x, top+32),    str(MemUsage.decode('UTF-8')), font=font, fill=255)
+    draw.text((x, top+48),    str(Disk.decode('UTF-8')),font=font, fill=255)
 
     # Display image.
     disp.image(image)
@@ -161,7 +182,7 @@ while True:
     time.sleep(6)
     
     mode=0
-    counter=30
+    counter=29
 
   counter=counter+1
   time.sleep(1)
