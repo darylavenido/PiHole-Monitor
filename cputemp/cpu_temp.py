@@ -39,7 +39,9 @@ def log_temp(samples,interval):
             print(data, end='')
             log.write(data)
             sleep(interval)
-
-while True:
-    # Log temps every 10 seconds, update file every 6 writes
-    log_temp(6,10)
+try:
+    while True:
+        # Log temps every 10 seconds, update file every 6 writes
+        log_temp(6,10)
+except KeyboardInterrupt:
+    print()
