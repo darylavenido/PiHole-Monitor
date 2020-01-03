@@ -22,6 +22,8 @@
 import httplib, urllib
 import sys
 
+print("Running pushover_boot.py")
+
 if len(sys.argv)==5:
 
   # Get 4 arguments passed to this script
@@ -31,18 +33,29 @@ if len(sys.argv)==5:
   mytoken=sys.argv[4]
   mymessage="Your "+sys.argv[1]+" camera has just rebooted"
 
-  print(mytitle)
+  print(mymessage)
 
-  conn = httplib.HTTPSConnection("api.pushover.net:443")
-  conn.request("POST", "/1/messages.json",
-    urllib.urlencode({
-      "token": mytoken,      # Pushover app token
-      "user": myuser,        # Pushover user token
-      "html": "1",           # 1 for HTML, 0 to disable
-      "title": mytitle,      # Title of message
-      "message": mymessage,  # Message (HTML if required)
-      "url": myip,           # Link to include in message
-      "url_title": myip,     # Text for link
-      "sound": "cosmic",     # Sound played on receiving device
-    }), { "Content-type": "application/x-www-form-urlencoded" })
-  conn.getresponse()
+  try:
+    conn = httplib.HTTPSConnection("api.pushover.net:443")
+    conn.request("POST", "/1/messages.json",
+      urllib.urlencode({
+        "token": mytoken,      # Pushover app token
+        "user": myuser,        # Pushover user token
+        "html": "1",           # 1 for HTML, 0 to disable
+        "title": mytitle,      # Title of message
+        "message": mymessage,  # Message (HTML if required)
+        "url": myip,           # Link to include in message
+        "url_title": myip,     # Text for link
+        "sound": "cosmic",     # Sound played on receiving device
+      }), { "Content-type": "application/x-www-form-urlencoded" })
+    response=conn.getresponse()
+    if response.status==200:
+      print("Pushover message successful (Response status " + str(response.status) + ")")
+    else:
+      print("Pushover message failed (Response status " + str(response.status) + ")")
+    
+  except:
+    print("Error sending message to Pushover.")
+  
+else:
+  print("Incorrect number of arguments supplied.")
