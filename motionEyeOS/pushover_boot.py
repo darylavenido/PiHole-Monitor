@@ -31,8 +31,8 @@ def get_ip(interface):
     ifconfig_output=process.communicate()[0]
     x=ifconfig_output.find("inet ")
     if x>0:
-      y=ifconfig_output.find(" ",x+6)
-      ip_address=ifconfig_output[x+6:y]
+      y=ifconfig_output.find(" ",x+5)
+      ip_address=ifconfig_output[x+5:y]
   except:
     pass
   return ip_address
