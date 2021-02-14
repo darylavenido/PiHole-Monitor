@@ -1,16 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #--------------------------------------
 #
 #     Minecraft Python API
 #        Castle Builder
 #
 # This script creates a castle complete
-# with moat and perimeter walls.
+# with keep, moat and perimeter walls.
 #
 # Author : Matt Hawkins
-# Date   : 07/06/2014
+# Date   : 12/02/2021
 #
-# http://www.raspberrypi-spy.co.uk/
+# https://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
 
@@ -26,61 +26,77 @@ mc.postToChat("Let's build a castle!")
 # Define Functions
 #--------------------------------------
 
-def CreateWalls(size,baseheight,height,material,battlements,walkway):
-  # Create 4 walls with a specified width, height and material.
+def CreateWalls(x,y,z,size,height,material,battlements,walkway):
+  # Create 4 walls with a specified size, height and material.
   # Battlements and walkways can also be added to the top edges.
   
-  mc.setBlocks(-size,baseheight+1,-size,size,baseheight+height,-size,material) 
-  mc.setBlocks(-size,baseheight+1,-size,-size,baseheight+height,size,material)
-  mc.setBlocks(size,baseheight+1,size,-size,baseheight+height,size,material) 
-  mc.setBlocks(size,baseheight+1,size,size,baseheight+height,-size,material) 
+  mc.setBlocks(x-size,y+1,z-size,x+size,y+height,z-size,material) 
+  mc.setBlocks(x-size,y+1,z-size,x-size,y+height,z+size,material)
+  mc.setBlocks(x+size,y+1,z+size,x-size,y+height,z+size,material) 
+  mc.setBlocks(x+size,y+1,z+size,x+size,y+height,z-size,material) 
 
   # Add battlements to top edge
   if battlements==True:
-    for x in range(0,(2*size)+1,2):
-      mc.setBlock(size,baseheight+height+1,(x-size),material) 
-      mc.setBlock(-size,baseheight+height+1,(x-size),material) 
-      mc.setBlock((x-size),baseheight+height+1,size,material) 
-      mc.setBlock((x-size),baseheight+height+1,-size,material)
-      
+    for q in range(0,(2*size)+1,2):
+      mc.setBlock(x-size,y+height+1,z-size+q,material) 
+      mc.setBlock(x+size,y+height+1,z-size+q,material) 
+      mc.setBlock(x-size+q,y+height+1,z+size,material) 
+      mc.setBlock(x-size+q,y+height+1,z-size,material)
+
   # Add wooden walkways
   if walkway==True:  
-    mc.setBlocks(-size+1,baseheight+height-1,size-1,size-1,baseheight+height-1,size-1,block.WOOD_PLANKS)   
-    mc.setBlocks(-size+1,baseheight+height-1,-size+1,size-1,baseheight+height-1,-size+1,block.WOOD_PLANKS)  
-    mc.setBlocks(-size+1,baseheight+height-1,-size+1,-size+1,baseheight+height-1,size-1,block.WOOD_PLANKS)   
-    mc.setBlocks(size-1,baseheight+height-1,-size+1,size-1,baseheight+height-1,size-1,block.WOOD_PLANKS)  
+    mc.setBlocks(x-size+1,y+height-1,z+size-1,x+size-1,y+height-1,z+size-1,block.WOOD_PLANKS)   
+    mc.setBlocks(x-size+1,y+height-1,z-size+1,x+size-1,y+height-1,z-size+1,block.WOOD_PLANKS)  
+    mc.setBlocks(x-size+1,y+height-1,z-size+1,x-size+1,y+height-1,z+size-1,block.WOOD_PLANKS)   
+    mc.setBlocks(x+size-1,y+height-1,z-size+1,x+size-1,y+height-1,z+size-1,block.WOOD_PLANKS)  
 
-def CreateLandscape(moatwidth,moatdepth,islandwidth):
+def CreateLandscape(x,y,z,moatwidth,moatdepth,islandwidth):
   # Set upper half to air
-  mc.setBlocks(-128,1,-128,128,128,128,block.AIR) 
-  # Set lower half of world to dirt with a layer of grass
-  mc.setBlocks(-128,-1,-128,128,-128,128,block.DIRT)
-  mc.setBlocks(-128,0,-128,128,0,128,block.GRASS)
+  mc.setBlocks(x-moatwidth-2,y,z-moatwidth-2,x+moatwidth+2,y+100,z+moatwidth+2,block.AIR) 
+  # Create square of grass
+  mc.setBlocks(x-moatwidth-2,y,z-moatwidth-2,x+moatwidth+2,y-1,z+moatwidth+2,block.GRASS)
+  # with a block of dirt underneath it
+  mc.setBlocks(x-moatwidth-2,y-1,z-moatwidth-2,x+moatwidth+2,y-moatdepth-1,z+moatwidth+2,block.DIRT)  
   # Create water moat
-  mc.setBlocks(-moatwidth,0,-moatwidth,moatwidth,-moatdepth,moatwidth,block.WATER)
-  # Create island inside moat
-  mc.setBlocks(-islandwidth,0,-islandwidth,islandwidth,1,islandwidth,block.GRASS)  
+  mc.setBlocks(x-moatwidth,y,z-moatwidth,x+moatwidth,y-moatdepth,z+moatwidth,block.WATER)
+  # Create island
+  mc.setBlocks(x-islandwidth,y,z-islandwidth,x+islandwidth,y-moatdepth,z+islandwidth,block.GRASS)  
 
-def CreateKeep(size,baseheight,levels):
+def CreateKeep(x,y,z,size,floors):
   # Create a keep with a specified number
-  # of floors levels and a roof
-  height=(levels*5)+5
+  # of floors floors and a roof
+  height=(floors*5)+5
   
-  CreateWalls(size,baseheight,height,block.STONE_BRICK,True,True)
+  mc.postToChat("  Creating walls ...")
+  CreateWalls(x,y,z,size,height,block.STONE_BRICK,True,True)
   
   # Floors & Windows
-  for level in range(1,levels+1):
-    mc.setBlocks(-size+1,(level*5)+baseheight,-size+1,size-1,(level*5)+baseheight,size-1,block.WOOD_PLANKS)
+  mc.postToChat("  Creating floors ...")
+  for floor in range(1,floors+1):
+    mc.setBlocks(x-size+1,(floor*5)+y,z-size+1,x+size-1,y+(floor*5),z+size-1,block.WOOD_PLANKS)
+
+  # Staircase holes in floors
+  mc.postToChat("  Creating stairs ...")
+  mc.setBlocks(x-size+1,y+1,z-size+1,x-size+1,y+(floors*5),z-size+3,block.AIR)
+  # Stairs
+  for floor in range(1,floors+1):
+    print("Stairs for floor ",floor)
+    mc.setBlock(x-size+1,(floor*5)+y-1,z-size+1,block.WOOD_PLANKS)
+    mc.setBlock(x-size+1,(floor*5)+y-2,z-size+2,block.WOOD_PLANKS)
+    mc.setBlock(x-size+1,(floor*5)+y-3,z-size+3,block.WOOD_PLANKS)
+    mc.setBlock(x-size+1,(floor*5)+y-4,z-size+4,block.WOOD_PLANKS)
+    mc.setBlock(x-size+1,(floor*5)+y-2,z-size+5,block.TORCH)
 
   # Windows
-  for level in range(1,levels+1):
-    CreateWindows(0,(level*5)+baseheight+2,size,"N")
-    CreateWindows(0,(level*5)+baseheight+2,-size,"S")
-    CreateWindows(-size,(level*5)+baseheight+2,0,"W")
-    CreateWindows(size,(level*5)+baseheight+2,0,"E")
+  mc.postToChat("  Creating windows ...")
+  for floor in range(1,floors+1):
+    CreateWindows(x,(floor*5)+y+2,z+size,"N")
+    CreateWindows(x,(floor*5)+y+2,z-size,"S")
+    CreateWindows(x-size,(floor*5)+y+2,z,"W")
+    CreateWindows(x+size,(floor*5)+y+2,z,"E")
 
   # Door
-  mc.setBlocks(0,baseheight+1,size,0,baseheight+2,size,block.AIR)
+  mc.setBlocks(x,y+1,z-size,x,y+2,z-size,block.AIR)
 
 def CreateWindows(x,y,z,dir):
 
@@ -107,27 +123,51 @@ def CreateWindows(x,y,z,dir):
     a=0
   if dir=="E":
     a=1
-
-  mc.setBlock(x1,y-1,z1,109,a)
-  mc.setBlock(x2,y-1,z2,109,a)
   
+#--------------------------------------
+#
+# Configure some variables
+#
+#--------------------------------------
+
+keepFloors=4
+keepSize=5
+
+outerWallHeight=5
+innerWallHeight=6
+
+outerWallSize=21
+innerWallSize=13
+
+moatDepth=5
+moatWidth=5
+
+# Get the position of the player
+x, y, z = mc.player.getPos()
+
 #--------------------------------------
 #
 # Main Script  
 #
 #--------------------------------------
-  
+
+mc.postToChat("Creating ground and moat ...")
 print("Create ground and moat")
-CreateLandscape(33,10,23)  
+CreateLandscape(x,y,z,outerWallSize+2+moatWidth,moatDepth,outerWallSize+2)  
 
+mc.postToChat("Creating outer walls ...")
 print("Create outer walls")
-CreateWalls(21,1,5,block.STONE_BRICK,True,True)
+CreateWalls(x,y,z,outerWallSize,outerWallHeight,block.STONE_BRICK,True,True)
 
+mc.postToChat("Creating inner walls ...")
 print("Create inner walls")
-CreateWalls(13,1,6,block.STONE_BRICK,True,True)
+CreateWalls(x,y,z,innerWallSize,innerWallHeight+1,block.STONE_BRICK,True,True)
 
+mc.postToChat("Creating keep ...")
 print("Create Keep with 4 levels")
-CreateKeep(5,1,4)
+CreateKeep(x,y,z,keepSize,keepFloors)
 
-print("Position player on Keep's walkway")
-mc.player.setPos(0,30,4)
+print("Position player on Keep's top floor")
+mc.player.setPos(x,y+(keepFloors*5)+5,z)
+
+mc.postToChat("Finished!")
