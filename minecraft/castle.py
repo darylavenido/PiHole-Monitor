@@ -8,7 +8,7 @@
 # with keep, moat and perimeter walls.
 #
 # Author : Matt Hawkins
-# Date   : 12/02/2021
+# Date   : 15/02/2021
 #
 # https://www.raspberrypi-spy.co.uk/
 #
@@ -18,8 +18,10 @@
 import mcpi.minecraft as minecraft
 import mcpi.block as block
 
+# Create an API object
 mc = minecraft.Minecraft.create()
 
+# Send a message to the game window
 mc.postToChat("Let's build a castle!")
 
 #--------------------------------------
@@ -50,15 +52,18 @@ def CreateWalls(x,y,z,size,height,material,battlements,walkway):
     mc.setBlocks(x-size+1,y+height-1,z-size+1,x-size+1,y+height-1,z+size-1,block.WOOD_PLANKS)   
     mc.setBlocks(x+size-1,y+height-1,z-size+1,x+size-1,y+height-1,z+size-1,block.WOOD_PLANKS)  
 
-def CreateLandscape(x,y,z,moatwidth,moatdepth,islandwidth):
+def CreateLandscape(x,y,z,islandwidth,moatwidth,moatdepth):
+  
+  totalSize=islandwidth+moatwidth+2
+  
   # Set upper half to air
-  mc.setBlocks(x-moatwidth-2,y,z-moatwidth-2,x+moatwidth+2,y+100,z+moatwidth+2,block.AIR) 
+  mc.setBlocks(x-totalSize,y,z-totalSize,x+totalSize,y+100,z+totalSize,block.AIR) 
   # Create square of grass
-  mc.setBlocks(x-moatwidth-2,y,z-moatwidth-2,x+moatwidth+2,y-1,z+moatwidth+2,block.GRASS)
+  mc.setBlocks(x-totalSize,y,z-totalSize,x+totalSize,y-1,z+totalSize,block.GRASS)
   # with a block of dirt underneath it
-  mc.setBlocks(x-moatwidth-2,y-1,z-moatwidth-2,x+moatwidth+2,y-moatdepth-1,z+moatwidth+2,block.DIRT)  
+  mc.setBlocks(x-totalSize,y-1,z-totalSize,x+totalSize,y-moatdepth-1,z+totalSize,block.DIRT)  
   # Create water moat
-  mc.setBlocks(x-moatwidth,y,z-moatwidth,x+moatwidth,y-moatdepth,z+moatwidth,block.WATER)
+  mc.setBlocks(x-islandwidth-moatwidth,y,z-islandwidth-moatwidth,x+islandwidth+moatwidth,y-moatdepth,z+islandwidth+moatwidth,block.WATER)
   # Create island
   mc.setBlocks(x-islandwidth,y,z-islandwidth,x+islandwidth,y-moatdepth,z+islandwidth,block.GRASS)  
 
@@ -133,11 +138,11 @@ def CreateWindows(x,y,z,dir):
 keepFloors=4
 keepSize=5
 
-outerWallHeight=5
-innerWallHeight=6
-
 outerWallSize=21
+outerWallHeight=5
+
 innerWallSize=13
+innerWallHeight=6
 
 moatDepth=5
 moatWidth=5
@@ -153,7 +158,7 @@ x, y, z = mc.player.getPos()
 
 mc.postToChat("Creating ground and moat ...")
 print("Create ground and moat")
-CreateLandscape(x,y,z,outerWallSize+2+moatWidth,moatDepth,outerWallSize+2)  
+CreateLandscape(x,y,z,outerWallSize+2,moatWidth,moatDepth)  
 
 mc.postToChat("Creating outer walls ...")
 print("Create outer walls")
