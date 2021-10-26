@@ -54,7 +54,7 @@ def button_presssed():
     mode=1
 
 # Define GPIO pins used by button and LED
-ButtonGPIO=21
+ButtonGPIO=16
 LEDGPIO=24
 
 # Configure button connected to GPIO21 (Pin 40) and Ground (Pin 39)
