@@ -73,6 +73,11 @@ disp = Adafruit_SSD1306.SSD1306_128_64(rst=None)
 # Initialize library.
 disp.begin()
 
+# Leaving the OLED on for a long period of time can damage it
+# Set these to prevent OLED burn in
+DISPLAY_ON  = 10 # on time in seconds
+DISPLAY_OFF = 50 # off time in seconds
+
 # Clear display.
 disp.clear()
 disp.display()
@@ -176,10 +181,18 @@ while True:
     draw.text((x, top+32),    str(MemUsage.decode('UTF-8')), font=font, fill=255)
     draw.text((x, top+48),    str(Disk.decode('UTF-8')),font=font, fill=255)
 
-    # Display image.
+    # Display image. not timer
+   # disp.image(image)
+    #disp.display()
+   # time.sleep(6)
+    
+        # Display image. with timer
     disp.image(image)
-    disp.display()
-    time.sleep(6)
+    disp.show()
+    time.sleep(DISPLAY_ON)
+    disp.fill(0)
+    disp.show()
+    time.sleep(DISPLAY_OFF)
     
     mode=0
     counter=29
