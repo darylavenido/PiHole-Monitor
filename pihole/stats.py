@@ -33,6 +33,9 @@ import math
 import json
 import requests
 import subprocess
+import urllib3
+http = urllib3.PoolManager()
+import string
 
 # Graphics libraries
 from PIL import Image
@@ -73,11 +76,6 @@ disp = Adafruit_SSD1306.SSD1306_128_64(rst=None)
 # Initialize library.
 disp.begin()
 
-# Leaving the OLED on for a long period of time can damage it
-# Set these to prevent OLED burn in
-DISPLAY_ON  = 10 # on time in seconds
-DISPLAY_OFF = 50 # off time in seconds
-
 # Clear display.
 disp.clear()
 disp.display()
@@ -102,7 +100,8 @@ x = 0
 # Load Truetype font from https://www.dafont.com/bitmap.php
 # VCR OSD Mono by Riciery Leal
 font = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf',15)
-font2 = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf',40)
+font2 = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf',35)
+font3 = ImageFont.truetype('VCR_OSD_MONO_1.001.ttf',10)
 
 # Draw a black filled box to clear the image.
 draw.rectangle((0,0,width,height), outline=0, fill=0)
@@ -124,6 +123,8 @@ while True:
 
     # Get Pi-Hole data
     r = requests.get("http://localhost/admin/api.php?summary")
+    response = requests.get('http://localhost/admin/api.php?recentBlocked')
+    #t = http.request('GET','http://localhost/admin/api.php?recentBlocked')
 
     # Scroll from right-hand side (x 128 to 0 in steps of 16)
     for x in range(128,-1,-16):
@@ -132,10 +133,12 @@ while True:
       draw.rectangle((0,0,width,height), outline=0, fill=0)    
     
       # Display large Pi-Hole ads blocked percentage
-      draw.text((x, top-2),   "%s%%" % r.json()["ads_percentage_today"],  font=font2, fill=255)
-      draw.text((x, top+34),   "Ads blocked:", font=font, fill=255) 
-      draw.text((x, top+48),   "%s" % r.json()["ads_blocked_today"], font=font, fill=255) 
-      
+      draw.text((x, top-2),    "Ads blocked Today:", font=font3, fill=255)
+      draw.text((x, top+6),   "%s" % r.json()["ads_blocked_today"],  font=font2, fill=255)
+      draw.text((x, top+48),   "%s%%" % r.json()["ads_percentage_today"], font=font, fill=255) 
+      #draw.text((x, top+48),   print(response.text('UTF-8')), font=font3, fill=255) 
+      #draw.text((x, top+48),   "%s" % str(response.text), font=font3, fill=255) 
+    
       # Display image.
       disp.image(image)
       disp.display()
@@ -181,21 +184,14 @@ while True:
     draw.text((x, top+32),    str(MemUsage.decode('UTF-8')), font=font, fill=255)
     draw.text((x, top+48),    str(Disk.decode('UTF-8')),font=font, fill=255)
 
-    # Display image. not timer
-   # disp.image(image)
-    #disp.display()
-   # time.sleep(6)
-    
-        # Display image. with timer
+    # Display image.
     disp.image(image)
-    disp.show()
-    time.sleep(DISPLAY_ON)
-    disp.fill(0)
-    disp.show()
-    time.sleep(DISPLAY_OFF)
+    disp.display()
+    time.sleep(6)
     
     mode=0
     counter=29
 
   counter=counter+1
   time.sleep(1)
+
