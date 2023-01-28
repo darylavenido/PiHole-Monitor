@@ -122,7 +122,7 @@ while True:
   if mode==0 and counter>29:
 
     # Get Pi-Hole data
-    r = requests.get("http://localhost/admin/api.php?summary")
+    r = requests.get("http://localhost/admin/api.php?summaryRaw&token=3f4fa74468f336df5c4cf1d343d160f8948375732f82ea1a057138ae7d35055c")
     response = requests.get('http://localhost/admin/api.php?recentBlocked')
     #t = http.request('GET','http://localhost/admin/api.php?recentBlocked')
 
